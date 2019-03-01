@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 06 Mar 2019, 07:53:38
+    Author     : HolmesPlace
+*/
+
+/* The navigation bar */
+.navbar {
+  position: fixed; /* Set the navbar to fixed position */
+  bottom: 0; /* Position the navbar at the bottom of the page */
+  width: 100%; /* Full width */
+}
+
+/* Main content */
+.main {
+  margin-bottom: 30px; /* Add a bottom margin to avoid content overlay */
+}
