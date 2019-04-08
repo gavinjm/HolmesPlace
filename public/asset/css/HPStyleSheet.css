@@ -30,4 +30,13 @@ background-color: lightblue;
 /* Main content */
 .main {
   margin-top: 50px; /* Add a bottom margin to avoid content overlay */
+  margin-left: 100px; /* Create a right margin */
+}
+
+table {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-color: gray;
+  background-color: white;
 }

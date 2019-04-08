@@ -8,28 +8,27 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-class FuelType extends AbstractType
+class TripType extends AbstractType
 {
    public function buildForm(FormBuilderInterface $builder, array $options)
    {
        //$builder->add('id');
        $builder->add('date', DateType::class, array('widget' => 'single_text'));
-       $builder->add('odometer',IntegerType::class);
-       $builder->add('liters');
-       $builder->add('Amount');
-       $builder->add('location');
-       $builder->add('tankfull');
+       $builder->add('start_odo',IntegerType::class);
+       $builder->add('end_odo',IntegerType::class);
+       $builder->add('description');
+       $builder->add('trip_type');
        $builder->add('Save',SubmitType::class);
    }
    
    public function getName()
    {
-       return 'FuelLog';
+       return 'Trip';
    }
    
    public function getDefaultOptions(array $options)
    {
-       return array('data_class' => 'App\Entity\FuelLog');
+       return array('data_class' => 'App\Entity\Trip');
    }
 
 }

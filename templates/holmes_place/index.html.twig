@@ -5,12 +5,18 @@
 {% block body %}
    
      <div class="main">    
-    <h1>Hello {{ controller_name }}! ✅</h1>
-       
-    This friendly message is coming from:
+    <h1> {{ controller_name }}! ✅</h1>
+    <h3> Todays Date: {{ current_date }} </h3>  
+   Fuel Statistics:
     <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/HolmesPlace/src/Controller/HolmesPlaceController.php'|file_link(0) }}">src/Controller/HolmesPlaceController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/HolmesPlace/templates/holmes_place/index.html.twig'|file_link(0) }}">templates/holmes_place/index.html.twig</a></code></li>
+        <li>Total Distance:</li>
+        <li>Fuel Used:</li>
+        <li>Economy:</li>
     </ul>
+  Crypto-Currencies:
+  <ul>
+      <li>Bitcoin</li>
+      <li>Etherium</li>
+  </ul>
   </div>
 {% endblock %}

@@ -6,8 +6,25 @@
    
      <div class="main">    
     <h1>Action Required: {{ action }}! ✅</h1>
- 
-      
+ <form action="{{ path('fuel') }}" method="post" >
+  {{ form_widget(form) }}  
    
+ </form>
+  
+  <hr>
+  
+  <table border="1" padding="2">
+      <tr><th>Date</th><th>Odometer</th><th>Liters</th><th>Amount</th><th>Location</th><th>Full Tank</th></tr>
+  {% for fuelentry in fuel_entries %}
+          <tr>
+              <td> {{ fuelentry.date.format('Y-m-d') }} </td>
+              <td> {{ fuelentry.odometer }} </td>
+              <td> {{ fuelentry.liters }} </td>
+              <td> {{ fuelentry.amount }} </td>
+              <td> {{ fuelentry.location }} </td>
+              <td> {{ fuelentry.tankfull }} </td>
+           </tr>    
+  {% endfor %}
+  <table>
   </div>
 {% endblock %}

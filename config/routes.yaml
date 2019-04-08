@@ -1,11 +1,20 @@
 index:
     path:   /
     controller: App\Controller\HolmesPlaceController::index
+trip:
+    path:   /trip
+    controller: App\Controller\HolmesPlaceController::TripEntry
     
+server:
+    path:   /server
+    controller: App\Controller\HolmesPlaceController::NewServer    
+
 fuel:
     path:   /fuel
     controller: App\Controller\HolmesPlaceController::FuelEntry
 
-server:
-    path:   /server
-    controller: App\Controller\HolmesPlaceController::NewServer
+task_success:
+    path:   /fuel/task_success
+    controller: App\Controller\HolmesPlaceController::task_success
+
+
