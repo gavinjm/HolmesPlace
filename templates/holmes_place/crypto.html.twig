@@ -1,18 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Fuel Entry {% endblock %}
+{% block title %} Crypto Controller!{% endblock %}
 
 {% block body %}
    
      <div class="main">    
     <h1>Action Required: {{ action }}! ✅</h1>
- <form action="{{ path('fuel') }}" method="post" >
-  {{ form_widget(form) }}  
+  
    
- </form>
-  
-  <hr>
-  
   
   </div>
 {% endblock %}

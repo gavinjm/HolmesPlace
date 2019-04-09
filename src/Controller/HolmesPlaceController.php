@@ -17,9 +17,14 @@ class HolmesPlaceController extends AbstractController
    
     public function index()
     {
+        $te = $this->GetTripEntries();
+        $fe = $this->GetFuelEntries();
+        
         return $this->render('holmes_place/index.html.twig', [
             'controller_name' => 'Holmes Place Website',
             'current_date' => date("F j, Y, g:i a"),
+            'trip_entries' => $te,
+            'fuel_entries' => $fe,
         ]);
     }
     
@@ -33,6 +38,16 @@ class HolmesPlaceController extends AbstractController
         
     }
     
+    /**getTrips
+     * Returns all trip entries from table trips
+     * 
+     */
+    public function GetTripEntries(){
+       
+        $repository = $this->getDoctrine()->getRepository(Trip::class);
+        $tripEntry = $repository->findAll();
+        return $tripEntry;
+    }
     
     
     /*
@@ -44,6 +59,18 @@ class HolmesPlaceController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(FuelLog::class);
         $fuelEntry = $repository->findAll();
         return $fuelEntry;
+    }
+    
+    /**
+     * CryptoEntry
+     * Captures the current crypto prices.
+     * 
+     */
+    public function CryptoEntry(){
+       return $this->render('holmes_place/crypto.html.twig', [
+            'action' => 'New Crypto Entry',
+            'current_date' => date("F j, Y, g:i a"),
+        ]);
     }
     
     /**TripEntry
@@ -83,7 +110,7 @@ class HolmesPlaceController extends AbstractController
      */
     public function FuelEntry(Request $request){
         
-        $fe = $this->GetFuelEntries();
+        
         $fuelEntry = new FuelLog();
         $form = $this->createForm(FuelType::class,$fuelEntry);
         $form->handleRequest($request);
@@ -104,7 +131,7 @@ class HolmesPlaceController extends AbstractController
         
        return $this->render('holmes_place/fuelentry.html.twig', [
             'action' => 'New Fuel Entry Form ','form' => $form->createView(),
-           'fuel_entries' => $fe,
+           
         ]);
     }
     

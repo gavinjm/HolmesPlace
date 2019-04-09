@@ -4,6 +4,10 @@ index:
 trip:
     path:   /trip
     controller: App\Controller\HolmesPlaceController::TripEntry
+
+crypto:
+    path: /crypto
+    controller: App\Controller\HolmesPlaceController::CryptoEntry
     
 server:
     path:   /server
