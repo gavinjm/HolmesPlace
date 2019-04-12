@@ -22,14 +22,15 @@ class CryptoPrices
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="float")
      */
-    private $currency;
-
+    private $btc_price;
+    
     /**
      * @ORM\Column(type="float")
      */
-    private $price;
+    private $eth_price;
+
 
     public function getId(): ?int
     {
@@ -48,26 +49,26 @@ class CryptoPrices
         return $this;
     }
 
-    public function getCurrency(): ?string
+   
+    public function getBtcPrice(): ?float
     {
-        return $this->currency;
+        return $this->btc_price;
     }
 
-    public function setCurrency(string $currency): self
+    public function setBtcPrice(float $price): self
     {
-        $this->currency = $currency;
+        $this->btc_price = $price;
 
         return $this;
     }
-
-    public function getPrice(): ?float
+    public function getEthPrice(): ?float
     {
-        return $this->price;
+        return $this->eth_price;
     }
 
-    public function setPrice(float $price): self
+    public function setEthPrice(float $price): self
     {
-        $this->price = $price;
+        $this->eth_price = $price;
 
         return $this;
     }

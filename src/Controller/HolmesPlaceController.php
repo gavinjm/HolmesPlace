@@ -6,8 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\Type\FuelType;
 use App\Form\Type\TripType;
+use App\Form\Type\CryptoPriceType;
 use App\Entity\FuelLog;
 use App\Entity\Trip;
+use App\Entity\CryptoPrices;
 
 
 //use Symfony\Component\Routing\Annotation\Route;
@@ -19,12 +21,14 @@ class HolmesPlaceController extends AbstractController
     {
         $te = $this->GetTripEntries();
         $fe = $this->GetFuelEntries();
+        $cp = $this->getCryptoPrices();
         
         return $this->render('holmes_place/index.html.twig', [
             'controller_name' => 'Holmes Place Website',
             'current_date' => date("F j, Y, g:i a"),
             'trip_entries' => $te,
             'fuel_entries' => $fe,
+            'crypto_entries' => $cp,
         ]);
     }
     
@@ -49,7 +53,14 @@ class HolmesPlaceController extends AbstractController
         return $tripEntry;
     }
     
-    
+    /** getCryptoPrices
+     *  Returns latest crypto currency prices
+     */
+    public function getCryptoPrices(){
+        $repository = $this->getDoctrine()->getRepository(CryptoPrices::class);
+        $cryptoPrices = $repository->findAll();
+        return $cryptoPrices;
+    }
     /*
      * getFuelEntries
      * Returns last 10 fuel entries from the database into an array
@@ -66,10 +77,29 @@ class HolmesPlaceController extends AbstractController
      * Captures the current crypto prices.
      * 
      */
-    public function CryptoEntry(){
-       return $this->render('holmes_place/crypto.html.twig', [
+    public function CryptoEntry(Request $request){
+       $price = new CryptoPrices(); 
+       $form = $this->createForm(CryptoPriceType::class,$price);
+       $form->handleRequest($request);
+       
+       if ($form->isSubmitted() && $form->isValid()) {
+        // $form->getData() holds the submitted values
+        // but, the original `$task` variable has also been updated
+        $cr_price = $form->getData();
+        
+        // Save the entry to the database.
+         $entityManager = $this->getDoctrine()->getManager();
+         $entityManager->persist($cr_price);
+         $entityManager->flush();
+
+        return $this->redirectToRoute('task_success');
+       }
+       
+       
+       return $this->render('holmes_place/crypto_entry.html.twig', [
             'action' => 'New Crypto Entry',
             'current_date' => date("F j, Y, g:i a"),
+             'form' => $form->createView(),
         ]);
     }
     
