@@ -8,7 +8,11 @@ trip:
 crypto:
     path: /crypto
     controller: App\Controller\HolmesPlaceController::CryptoEntry
-    
+
+crypto_update:
+   path: /crypto/update
+   controller: App\Controller\HolmesPlaceController::updateCryptoPrices
+      
 server:
     path:   /server
     controller: App\Controller\HolmesPlaceController::NewServer    

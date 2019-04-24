@@ -10,6 +10,7 @@ use App\Form\Type\CryptoPriceType;
 use App\Entity\FuelLog;
 use App\Entity\Trip;
 use App\Entity\CryptoPrices;
+use Luno\Types\Ticker;
 
 
 //use Symfony\Component\Routing\Annotation\Route;
@@ -21,17 +22,70 @@ class HolmesPlaceController extends AbstractController
     {
         $te = $this->GetTripEntries();
         $fe = $this->GetFuelEntries();
-        $cp = $this->getCryptoPrices();
-        
+        $cp = $this->getCryptoLatest();
+       
+            
+     
         return $this->render('holmes_place/index.html.twig', [
             'controller_name' => 'Holmes Place Website',
             'current_date' => date("F j, Y, g:i a"),
             'trip_entries' => $te,
             'fuel_entries' => $fe,
-            'crypto_entries' => $cp,
+            'crypto_prices' => $cp,
         ]);
     }
     
+    /*getTickers
+     * Get latest Ticker values
+     * the true value in the json_decode ensures an array is returned from json_decode
+     */
+    public function getTickers(){
+        $jsonurl = "https://api.mybitx.com/api/1/tickers";
+        $json = file_get_contents($jsonurl);
+        return (json_decode($json));
+    }
+    
+    /*updateCryptPrices
+     * Updates the database with the latest Luno prices
+     * 
+     * 
+     */
+    public function updateCryptoPrices(){
+        $data = $this->getTickers();
+        $xbtzar = new Ticker();
+      //  echo "<table border='2'>";
+        // var_dump($data);
+        foreach ($data as $ticker) {
+    
+            foreach ($ticker as $currency){
+                if ($currency->pair == "XBTZAR"){
+                  $xbtzar->setAsk($currency->ask);
+                  $xbtzar->setBid($currency->bid);
+                  $xbtzar->setLastTrade($currency->last_trade);
+                  $xbtzar->setPair($currency->pair);
+                  $xbtzar->setRolling24HourVolume($currency->rolling_24_hour_volume);
+                  $xbtzar->setTimestamp($currency->timestamp);
+                }
+            }
+        }
+                // echo "<tr>";  
+                // echo "<td>".$currency->ask."</td>";
+                // echo "<td>".$currency->bid."</td>";
+                // echo "<td>".$currency->last_trade."</td>";
+                // echo "<td>".$currency->pair."</td>";
+                // echo "<td>".$currency->rolling_24_hour_volume."</td>";
+                // echo "<td>".$currency->timestamp."</td>";
+                // echo "</tr>";
+           
+            
+       // }
+       //  echo "<tr><td>".$xbtzar->getAsk()."</td><td>".$xbtzar->getPair()."</td></tr>";
+       //  echo "</table>";
+         
+        return $this->render('holmes_place/showcrypto.html.twig',[
+            'xbtzar' => $xbtzar,
+        ]); 
+    }
     
     /** Success page for all database entries
     *  
@@ -53,6 +107,21 @@ class HolmesPlaceController extends AbstractController
         return $tripEntry;
     }
     
+    /** getCryptoLatest
+     *  Returns: latest entry in the crypto_prices table
+    */
+    public function getCryptoLatest(){
+        //Query
+        $sql = "select * from crypto_prices order by date desc limit 1";
+        //set parameters 
+        //you may set as many parameters as you have on your query
+        //prices['color'] = blue; 
+        //create the prepared statement, by getting the doctrine connection
+        $stmnt = $this->getDoctrine()->getConnection()->prepare($sql);
+        $stmnt->execute();
+        return $stmnt->fetchAll();
+    }
+    
     /** getCryptoPrices
      *  Returns latest crypto currency prices
      */
@@ -61,6 +130,7 @@ class HolmesPlaceController extends AbstractController
         $cryptoPrices = $repository->findAll();
         return $cryptoPrices;
     }
+    
     /*
      * getFuelEntries
      * Returns last 10 fuel entries from the database into an array

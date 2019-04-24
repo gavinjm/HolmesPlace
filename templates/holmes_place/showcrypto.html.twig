@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Current Crypto Prices {% endblock %}
+
+{% block body %}
+     <div class="main">   
+    
+   
+        
+    
+    <h1> Hello  {{ xbtzar.ask }} </h1>
+    <table border="2">
+     <tr><th>Ask</th><th>Bid</th><th>Last Trade</th><th>Volume</th><th>Pair</th><th>Timestamp</th></tr>   
+     <tr>
+        <td> {{ xbtzar.ask }} </td>
+        <td> {{ xbtzar.bid }} </td>
+        <td> {{ xbtzar.lasttrade }} </td>
+        <td> {{ xbtzar.rolling24hourvolume }} </td>
+        <td> {{ xbtzar.pair }} </td>
+        <td> {{ xbtzar.timestamp }}</td>
+     </tr>
+     </table>
+           
+                
+         
+    
+         
+  </div>
+{% endblock %}

@@ -29,3 +29,39 @@ class CR_PriceType extends AbstractType
    }
 
 }
+/*//////////////////// Table from index page
+<table border="1" padding="2">
+      <tr><th>Date</th><th>Bitcoin</th><th>Etherium</th></tr>
+      {% for cryptoprices in crypto_entries %}
+      <tr>
+          <td>{{ cryptoprices.date.format('Y-m-d') }}</td>
+          <td>{{ cryptoprices.btcprice }}</td>
+          <td>{{ cryptoprices.ethprice }}</td>
+      </tr>
+  
+  
+  {% endfor %}
+  </table>
+ *
+ * 
+ *  
+ */
+
+
+/*
+ * 
+ * {% for tick in tickers %}
+              <li>Pair: {{ tick.pair }}</li>
+              <li>Last Trade: {{  tick.last_trade }}</li>
+          {% endfor %}
+
+ * <tr><th>Ask</th><th>Bid</th><th>Last Trade</th><th>Volume</th><th>Pair</th><th>Price</th></tr>
+          {% for ticker in crypto_values %}
+ * <td> {{ ticker.ask }} </td>
+                <td> {{ ticker.bid }} </td>
+                <td> {{ ticker.last_trade }} </td>
+                <td> {{ ticker.rolling_24_hour_volume }} </td>
+                <td> {{ ticker.pair }} </td>
+                <td> {{ ticker.timestamp }}</td>
+ * 
+ *  */
