@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Holmes Place{% endblock %}
+
+{% block body %}
+   
+    <div class="main">    
+    
+    <h3> Todays Date: {{ current_date }} </h3>
+    <h3> Month: {{ month }} </h3>
+    
+    <p>The growth percentage is calculated for the last 3 entries, the last 3 are displayed below.</p>
+    <div class="inlineTable">
+    <table >
+        <tr><th></th><th>Name</th><th>Balance</th><th>Value</th>
+        <tr>
+            <td>Bitcoin</td>
+            <td>{{ ccCrypto[0].name }}</td>
+            <td>{{ ccCrypto[0].balance }}</td>
+            <td>{{ crypto_prices[0].btc_price  * ccCrypto[0].balance }} </td>
+        </tr>
+        <tr>
+            <td>Etherium</td>
+            <td>{{ ccCrypto[1].name }}</td>
+            <td>{{ ccCrypto[1].balance }}</td>
+            <td>{{ crypto_prices[1].eth_price  * ccCrypto[1].balance }}</td>
+        </tr>
+        <tr>
+            <td>Rands</td>
+            <td>{{ ccCrypto[2].name }}</td>
+            <td>{{ ccCrypto[2].balance }}</td>
+            <td>{{ ccCrypto[2].balance }}</td>
+        </tr>
+    </table>
+      </div>      
+        <div class="inlineTable">
+         <table>
+        <tr>
+            <th></th>
+            <th>3rd</th>
+            <th>2nd</th>
+            <th>Cur</th>
+            <th>Growth(%)</th><tr>
+        <tr>         
+            <td>Bitcoin</td>
+            <td style="text-align:right"> {{ crypto_prices[2].btc_price }}</td>
+            <td style="text-align:right"> {{ crypto_prices[1].btc_price }}</td>
+            <td style="text-align:right"> {{ crypto_prices[0].btc_price }}</td>
+            {% if bgrowth > 0 %}
+            <td class="posGrowth"> {{ bgrowth }} </td>
+            {% else %}
+                <td class="negGrowth"> {{ bgrowth }} </td>
+            {% endif %}
+        </tr>
+        <tr>
+            
+            <td>Etherium</td>
+            <td style="text-align:right">{{ crypto_prices[2].eth_price }}</td>
+            <td style="text-align:right">{{ crypto_prices[1].eth_price }}</td>
+            <td style="text-align:right">{{ crypto_prices[0].eth_price }}</td>
+            {% if egrowth > 0 %}
+            <td class="posGrowth">{{ egrowth }}  </td>
+            {% else %}
+                <td class="negGrowth">{{ egrowth }}  </td>
+                {% endif %}
+        </tr>
+        <tr><td>Rands</td><td></td><td></td><td></td><td></td></tr>
+        
+    </table>     
+    </div>
+        <br>
+    <div class="inlineTable">
+            <table>
+                <tr><th>Fuel Statistics</th><th>Pvs</th><th>Cur</th></tr>
+                <tr><td>Fuel Used</td><td style="text-align:right" >{{ fuelStats['pmFuel'] }}</td>
+            <td style="text-align:right" >{{ fuelStats['cmFuel'] }}</td></tr>
+                <tr><td>Fuel Cost</td>
+            <td style="text-align:right">{{ fuelStats['pmCost'] }}</td>
+            <td style="text-align:right">{{ fuelStats['cmCost'] }}</td></tr>
+                <tr><td>Distance Travelled</td>
+            <td style="text-align:right">{{ fuelStats['pmDistance'] }}</td>
+            <td style="text-align:right">{{ fuelStats['cmDistance'] }}</td></tr>
+                <tr><td>Fuel Efficiency</td>
+            <td style="text-align: right">{{ fuelStats['pmEconomy'] }} </td>
+            <td style="text-align: right">{{ fuelStats['cmEconomy'] }} </td></tr>
+                
+            </table>  
+        
+            
+    </div>
+    
+   <div class="inlineTable">
+
+  {% if fuel_entries is defined %}  
+  <table>
+      <tr><th>Date</th><th>Odometer</th><th>Liters</th><th>Amount</th><th>Location</th><th>Full Tank</th></tr>
+  {% for fuelentry in fuel_entries %}
+          <tr>
+              <td> {{ fuelentry.date }} </td>
+              <td> {{ fuelentry.odometer }} </td>
+              <td> {{ fuelentry.liters }} </td>
+              <td> {{ fuelentry.amount }} </td>
+              <td> {{ fuelentry.location }} </td>
+              <td> {{ fuelentry.tankfull }} </td>
+           </tr>    
+  {% endfor %}
+  
+  {% endif %}
+  
+  </table>
+    </div>
+  </div>
+{% endblock %}

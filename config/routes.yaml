@@ -1,6 +1,6 @@
 index:
     path:   /
-    controller: App\Controller\HolmesPlaceController::index
+    controller: App\Controller\HolmesPlaceController::Index
 trip:
     path:   /trip
     controller: App\Controller\HolmesPlaceController::TripEntry
@@ -8,21 +8,27 @@ trip:
 crypto:
     path: /crypto
     controller: App\Controller\HolmesPlaceController::CryptoEntry
+    
+crypto_showticker:
+   path: /crypto/showticker
+   controller: App\Controller\HolmesPlaceController::showTickerData
 
 crypto_update:
    path: /crypto/update
    controller: App\Controller\HolmesPlaceController::updateCryptoPrices
       
-server:
-    path:   /server
-    controller: App\Controller\HolmesPlaceController::NewServer    
+summary:
+    path:   /summary
+    controller: App\Controller\HolmesPlaceController::SummaryPage    
 
 fuel:
     path:   /fuel
     controller: App\Controller\HolmesPlaceController::FuelEntry
 
 task_success:
-    path:   /fuel/task_success
+    path:   /task_success/{slug}
+    defaults:
+        slug: 'Default'
     controller: App\Controller\HolmesPlaceController::task_success
 
 

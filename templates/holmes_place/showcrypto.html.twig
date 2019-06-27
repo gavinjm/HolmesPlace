@@ -4,26 +4,29 @@
 
 {% block body %}
      <div class="main">   
+         
     
-   
-        
-    
-    <h1> Hello  {{ xbtzar.ask }} </h1>
+    <h1> Date of Transcation {% if dte is defined %} {{ dte }} {% endif %}</h1>
     <table border="2">
-     <tr><th>Ask</th><th>Bid</th><th>Last Trade</th><th>Volume</th><th>Pair</th><th>Timestamp</th></tr>   
-     <tr>
-        <td> {{ xbtzar.ask }} </td>
-        <td> {{ xbtzar.bid }} </td>
-        <td> {{ xbtzar.lasttrade }} </td>
-        <td> {{ xbtzar.rolling24hourvolume }} </td>
-        <td> {{ xbtzar.pair }} </td>
-        <td> {{ xbtzar.timestamp }}</td>
-     </tr>
+        <tr><th>Pair</th><th>Ask</th><th>Bid</th><th>Last Trade</th><th>Volume</th>
+            </tr>   
+    {% for ticker in data %} 
+     {% for tick in ticker %}
+        <tr>
+        <td> {% if tick['pair'] is defined %} {{ tick['pair'] }} {% endif %}</td>
+        <td> {% if tick['ask'] is defined  %} {{ tick['ask'] }} {% endif %} </td>
+        <td> {{ tick['bid'] }} </td>
+        <td> 
+            {% if tick['last_trade'] is defined %}
+                {{ tick['last_trade'] }}
+             {% endif %}
+        </td>
+        <td> {{ tick['rolling_24_hour_volume'] }} </td>
+        </tr>
+      {% endfor %}
+    {% endfor %}
      </table>
-           
-                
-         
     
-         
+                        
   </div>
 {% endblock %}

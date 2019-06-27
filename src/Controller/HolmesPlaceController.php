@@ -10,93 +10,167 @@ use App\Form\Type\CryptoPriceType;
 use App\Entity\FuelLog;
 use App\Entity\Trip;
 use App\Entity\CryptoPrices;
-use Luno\Types\Ticker;
+use App\Entity\Ticker;
+
 
 
 //use Symfony\Component\Routing\Annotation\Route;
 
 class HolmesPlaceController extends AbstractController
 {
-   
-    public function index()
-    {
-        $te = $this->GetTripEntries();
-        $fe = $this->GetFuelEntries();
-        $cp = $this->getCryptoLatest();
        
+    public function SummaryPage()
+    {
+        
+        $mn = date("m");    // Get the current month "m" = 05 06 etc.
+        $fe = $this->GetFuelEntriesForMonth($mn);
+        $pm = $this->getFuelEntriesForMonth($mn-1);
+        $fs = $this->GetFuelStatistics($mn);            // Gets fuel used and cost for month $mn
+        $cp = $this->getCryptoLatest();                 // selects the latest crypto currency prices
+        $cc = $this->getCurrencies();                   // Selects the crypto names/balances.
+      //  print_r($cc);
+      // Calculate the growth as a %age between pvs and curr price
+      // This is fairly inaccurate as some days multiple entries are captured.
+      // The formula used is: (currPrice - pvsPrice) / pvsPrice * 100
+        $bgrowth = round(($cp[0]['btc_price']-$cp[2]['btc_price']) / $cp[2]['btc_price']*100,2);
+        $egrowth = round(($cp[0]['eth_price']-$cp[2]['eth_price']) / $cp[2]['eth_price']*100,2);
+          
+       $pmcount = count($pm)-1; 
+       
+       $pmTotalDist = $pm[$pmcount]['odometer'] - $pm[0]['odometer'];
+       $pmTotalFuel = 0;
+       $pmCost =0;
+        for ($i=0;$i<$pmcount; $i++){
+            $pmTotalFuel = $pmTotalFuel + $pm[$i]['liters'];
+            $pmCost = $pmCost + $pm[$i]['amount'];
             
+        }
+        
+        $pmEconomy = round(($pmTotalFuel / $pmTotalDist * 100),2);
+        
+       // for previous two months.       
+        $endcount = count($fe);
+        $sm = $fe[0]['odometer'];
+        $em = $fe[$endcount-1]['odometer'];
+        $cmDistance = $em - $sm;
+        $cmTotalFuel = 0;
+        $cmCost = 0;
+        for ($i=0;$i<$endcount; $i++){
+            $cmTotalFuel = $cmTotalFuel + $fe[$i]['liters'];
+            $cmCost = $cmCost + $fe[$i]['amount'];
+        }
+       // $fu = $cmTotalFuel - $fe[0]['liters']; 
+        $cmEconomy  = round(($cmTotalFuel / $cmDistance * 100),2);
+        
+        // Add everything to an associative array to send to index.
+        //$fuelStats = Array(); // An empty array.
+        $fuelStats= array(
+             "pmCost" => $pmCost,
+             "pmFuel" => $pmTotalFuel,
+             "pmDistance" => $pmTotalDist,
+             "pmEconomy" => $pmEconomy,
+             "cmCost" => $cmCost,
+             "cmFuel" => $cmTotalFuel,
+             "cmDistance" => $cmDistance,
+             "cmEconomy" => $cmEconomy,
+            ); 
+       // echo "<br> Total Fuel Used : ".$total_fuel."</br>";
+       // echo "<br> Efficiency..... : ".$fuel_efficiency."</br>";
+        
+       // var_dump($fe);    
      
-        return $this->render('holmes_place/index.html.twig', [
+        return $this->render('holmes_place/summary.html.twig', [
             'controller_name' => 'Holmes Place Website',
             'current_date' => date("F j, Y, g:i a"),
-            'trip_entries' => $te,
+            'month' => $mn,
             'fuel_entries' => $fe,
+            'fuel_stats' => $fs,
             'crypto_prices' => $cp,
+            'fuelStats' => $fuelStats,
+            'egrowth' => $egrowth,
+            'bgrowth' => $bgrowth,
+            'ccCrypto' => $cc,
         ]);
     }
     
-    /*getTickers
+    /** getTickers
      * Get latest Ticker values
      * the true value in the json_decode ensures an array is returned from json_decode
      */
     public function getTickers(){
         $jsonurl = "https://api.mybitx.com/api/1/tickers";
         $json = file_get_contents($jsonurl);
-        return (json_decode($json));
+        // the true param to json_decode ensures an associative array is returned.
+        return (json_decode($json,true));
+         //return (json_decode($json,true));
     }
     
-    /*updateCryptPrices
+    /*
+     * showTickerData
+     * displays the contents of the ticker table.
+     * 
+     */
+    public function showTickerData(){
+        $repository = $this->getDoctrine()->getRepository(Ticker::class);
+        $tickers = $repository->findBy(
+                array(),
+                array('id' => 'DESC')
+            );
+        
+        
+        return $this->render('holmes_place/showTickerTable.html.twig',[
+            'data' => $tickers,
+         
+           ]); 
+    
+        
+        
+    }
+    
+    /** 
+     * updateCryptoPrices
      * Updates the database with the latest Luno prices
-     * 
-     * 
+     * calls getTickers() to return the latest data from Luno api site.
+     * TH200196
      */
     public function updateCryptoPrices(){
         $data = $this->getTickers();
         $xbtzar = new Ticker();
-      //  echo "<table border='2'>";
-        // var_dump($data);
         foreach ($data as $ticker) {
-    
-            foreach ($ticker as $currency){
-                if ($currency->pair == "XBTZAR"){
-                  $xbtzar->setAsk($currency->ask);
-                  $xbtzar->setBid($currency->bid);
-                  $xbtzar->setLastTrade($currency->last_trade);
-                  $xbtzar->setPair($currency->pair);
-                  $xbtzar->setRolling24HourVolume($currency->rolling_24_hour_volume);
-                  $xbtzar->setTimestamp($currency->timestamp);
+           foreach ($ticker as $currency){
+             if ($currency['pair'] == "XBTZAR"){
+                  $xbtzar->setPair($currency['pair']);
+                  $xbtzar->setAsk($currency['ask']);
+                  $xbtzar->setBid($currency['bid']);
+                  $xbtzar->setLastTrade($currency['last_trade']);
+                  $xbtzar->setRolling24HourVolume($currency['rolling_24_hour_volume']);
+                  $xbtzar->setTimestamp($currency['timestamp']);              
                 }
             }
         }
-                // echo "<tr>";  
-                // echo "<td>".$currency->ask."</td>";
-                // echo "<td>".$currency->bid."</td>";
-                // echo "<td>".$currency->last_trade."</td>";
-                // echo "<td>".$currency->pair."</td>";
-                // echo "<td>".$currency->rolling_24_hour_volume."</td>";
-                // echo "<td>".$currency->timestamp."</td>";
-                // echo "</tr>";
-           
-            
-       // }
-       //  echo "<tr><td>".$xbtzar->getAsk()."</td><td>".$xbtzar->getPair()."</td></tr>";
-       //  echo "</table>";
-         
+      // Save the XBTZAR to the database.
+         $entityManager = $this->getDoctrine()->getManager();
+         $entityManager->persist($xbtzar);
+         $entityManager->flush(); 
         return $this->render('holmes_place/showcrypto.html.twig',[
-            'xbtzar' => $xbtzar,
+            'data' => $data,
+            'dte' => date('D, d M Y H:i:s',(int)$xbtzar->getTimestamp()),
         ]); 
     }
     
-    /** Success page for all database entries
-    *  
-    */
-    public function task_success(){
-        
-        return $this->render('holmes_place/task_success.html.twig'); 
-        
+    /** 
+     * Success page for all database entries
+     * @param string $action 
+     */
+    public function task_success($action="default"){
+        $act = $action;  
+      
+     return $this->render('holmes_place/task_success.html.twig',['action' => $act,]); 
+      
     }
     
-    /**getTrips
+    /**
+     * GetTripEntries
      * Returns all trip entries from table trips
      * 
      */
@@ -107,41 +181,79 @@ class HolmesPlaceController extends AbstractController
         return $tripEntry;
     }
     
+    /** getCurrencies
+     * Returns: the wallet names and balances
+     */
+    public function getCurrencies(){
+        $sql = "select name, balance from crypto_currency";
+        //create the prepared statement, by getting the doctrine connection
+        $stmnt = $this->getDoctrine()->getConnection()->prepare($sql);
+        $stmnt->execute();
+        return $stmnt->fetchAll();   
+    }
+    
     /** getCryptoLatest
      *  Returns: latest entry in the crypto_prices table
     */
     public function getCryptoLatest(){
         //Query
-        $sql = "select * from crypto_prices order by date desc limit 1";
-        //set parameters 
-        //you may set as many parameters as you have on your query
-        //prices['color'] = blue; 
+        $sql = "select date,btc_price,eth_price from crypto_prices order by id desc limit 3";
         //create the prepared statement, by getting the doctrine connection
         $stmnt = $this->getDoctrine()->getConnection()->prepare($sql);
         $stmnt->execute();
         return $stmnt->fetchAll();
     }
     
-    /** getCryptoPrices
-     *  Returns latest crypto currency prices
+    /** 
+     * getTickerPrices
+     *  Returns latest ticker prices
      */
-    public function getCryptoPrices(){
-        $repository = $this->getDoctrine()->getRepository(CryptoPrices::class);
+    public function getTickerPrices(){
+        $repository = $this->getDoctrine()->getRepository(Ticker::class);
         $cryptoPrices = $repository->findAll();
         return $cryptoPrices;
     }
     
-    /*
-     * getFuelEntries
-     * Returns last 10 fuel entries from the database into an array
+    /** 
+     * getFuelStatistics
+     * Returns last totals for fuel and amount for a specific month.
      */
-    public function GetFuelEntries(){
+    public function GetFuelStatistics($mnth){
        
-        $repository = $this->getDoctrine()->getRepository(FuelLog::class);
-        $fuelEntry = $repository->findAll();
-        return $fuelEntry;
+    $em = $this->getDoctrine()->getManager();
+    // $month = "'2019-".$mnth."%'";
+    $sql = "SELECT ROUND(SUM(liters),2) as Fuel, ROUND(SUM(amount),2)as Cost FROM fuel_log where MONTH(date) like ".$mnth; 
+    $stmt = $em->getConnection()->prepare($sql);
+    $stmt->bindValue(1,$mnth);
+    $stmt->execute();
+    return $stmt->fetchAll();
     }
     
+    
+    /** 
+     * getMonthlyFuelEntries
+     * Returns all fuel entries for month $mnth
+     * parameter: $mnth
+     * Table: fuel_log
+     * id => int(11)
+     * date => date
+     * odometer => int(11)
+     * liters => double
+     * amount => double
+     * location =>varchar(255)
+     * tankfull => tinyint(1)
+     */
+    public function getFuelEntriesForMonth($mnth)
+    {   
+        $em = $this->getDoctrine()->getManager();
+    // $month = "'2019-".$mnth."%'";
+        $sql = "SELECT * FROM fuel_log where MONTH(date) like ".$mnth;
+       // print_r($sql);
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->bindValue(1,$mnth);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }   
     /**
      * CryptoEntry
      * Captures the current crypto prices.
@@ -161,8 +273,8 @@ class HolmesPlaceController extends AbstractController
          $entityManager = $this->getDoctrine()->getManager();
          $entityManager->persist($cr_price);
          $entityManager->flush();
-
-        return $this->redirectToRoute('task_success');
+         
+         return $this->redirectToRoute('task_success', array('slug'=> 'Crypto'));
        }
        
        
@@ -235,9 +347,15 @@ class HolmesPlaceController extends AbstractController
         ]);
     }
     
-    public function NewServer(){
-        return $this->render('holmes_place/serverentry.html.twig', [
-            'action' => 'New Server Entry',
+    public function Index(){
+        // Lets get the information from the GLobal $_Server[]
+        $request = Request::createFromGlobals();
+        $content =  $request->getContent();
+        print_r($content);
+        
+        
+        return $this->render('holmes_place/homepage.html.twig', [
+            'action' => 'Index Page',
         ]);
     }
 }

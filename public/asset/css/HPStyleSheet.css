@@ -29,14 +29,39 @@ background-color: lightblue;
 }
 /* Main content */
 .main {
-  margin-top: 50px; /* Add a bottom margin to avoid content overlay */
-  margin-left: 100px; /* Create a right margin */
+  margin-top: 50px;     /* Add a bottom margin to avoid content overlay */
+  margin-left: 100px;   /* Create a right margin */
+}
+
+.floatedTable {
+            float:left;
+}
+
+.inlineTable {
+            display: inline-block;
 }
 
 table {
-  display: table;
-  border-collapse: separate;
-  border-spacing: 2px;
-  border-color: gray;
-  background-color: white;
-}
+    border-collapse: collapse;
+  }
+td {
+    border: 1px solid white; 
+    padding: 2px;
+    text-align: right;
+  }
+th{
+    border: 1px solid white; 
+    padding: 2px;
+    text-align: center; 
+  }
+  
+  .posGrowth{
+      color: green;
+      font-weight: bold;
+      text-align:right;
+  }
+  .negGrowth{
+      color: red;
+       font-weight: bold;
+       text-align:right;
+  }
