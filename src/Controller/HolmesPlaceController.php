@@ -11,6 +11,7 @@ use App\Entity\FuelLog;
 use App\Entity\Trip;
 use App\Entity\CryptoPrices;
 use App\Entity\Ticker;
+use App\Entity\StatisticConsolidator;
 
 
 
@@ -22,11 +23,14 @@ class HolmesPlaceController extends AbstractController
     public function SummaryPage()
     {
         
-        $mn = date("m");    // Get the current month "m" = 05 06 etc.
+        // $mn = date("m");    // Get the current month "m" = 05 06 etc.
+        $mn = 06;
         $fe = $this->GetFuelEntriesForMonth($mn);
         $pm = $this->getFuelEntriesForMonth($mn-1);
         $fs = $this->GetFuelStatistics($mn);            // Gets fuel used and cost for month $mn
         $cp = $this->getCryptoLatest();                 // selects the latest crypto currency prices
+        $FuelStats = new StatisticConsolidator();
+        
         $cc = $this->getCurrencies();                   // Selects the crypto names/balances.
       //  print_r($cc);
       // Calculate the growth as a %age between pvs and curr price
