@@ -15,21 +15,21 @@
         <tr><th></th><th>Name</th><th>Balance</th><th>Value</th>
         <tr>
             <td>Bitcoin</td>
-            <td>{{ ccCrypto[0].name }}</td>
-            <td>{{ ccCrypto[0].balance }}</td>
-            <td>{{ crypto_prices[0].btc_price  * ccCrypto[0].balance }} </td>
+            <td>{{ cryptoStats['ccCrypto'][0].name }}</td>
+            <td>{{ cryptoStats['ccCrypto'][0].balance }}</td>
+            <td>{{ cryptoStats['btc_value']  }} </td>
         </tr>
         <tr>
             <td>Etherium</td>
-            <td>{{ ccCrypto[1].name }}</td>
-            <td>{{ ccCrypto[1].balance }}</td>
-            <td>{{ crypto_prices[1].eth_price  * ccCrypto[1].balance }}</td>
+            <td>{{ cryptoStats['ccCrypto'][1].name }}</td>
+            <td>{{ cryptoStats['ccCrypto'][1].balance }}</td>
+            <td>{{ cryptoStats['eth_value'] }}</td>
         </tr>
         <tr>
             <td>Rands</td>
-            <td>{{ ccCrypto[2].name }}</td>
-            <td>{{ ccCrypto[2].balance }}</td>
-            <td>{{ ccCrypto[2].balance }}</td>
+            <td>{{ cryptoStats['ccCrypto'][2].name }}</td>
+            <td> -6500.00 </td>
+            <td>{{ cryptoStats['btc_value'] +  cryptoStats['eth_value'] }}</td>
         </tr>
     </table>
       </div>      
@@ -46,10 +46,10 @@
             <td style="text-align:right"> {{ crypto_prices[2].btc_price }}</td>
             <td style="text-align:right"> {{ crypto_prices[1].btc_price }}</td>
             <td style="text-align:right"> {{ crypto_prices[0].btc_price }}</td>
-            {% if bgrowth > 0 %}
-            <td class="posGrowth"> {{ bgrowth }} </td>
+            {% if cryptoStats['bgrowth'] > 0 %}
+            <td class="posGrowth"> {{ cryptoStats['bgrowth'] }} </td>
             {% else %}
-                <td class="negGrowth"> {{ bgrowth }} </td>
+                <td class="negGrowth"> {{ cryptoStats['bgrowth'] }} </td>
             {% endif %}
         </tr>
         <tr>
@@ -58,14 +58,18 @@
             <td style="text-align:right">{{ crypto_prices[2].eth_price }}</td>
             <td style="text-align:right">{{ crypto_prices[1].eth_price }}</td>
             <td style="text-align:right">{{ crypto_prices[0].eth_price }}</td>
-            {% if egrowth > 0 %}
-            <td class="posGrowth">{{ egrowth }}  </td>
+            {% if cryptoStats['egrowth'] > 0 %}
+            <td class="posGrowth">{{ cryptoStats['egrowth'] }}  </td>
             {% else %}
-                <td class="negGrowth">{{ egrowth }}  </td>
+                <td class="negGrowth">{{ cryptoStats['egrowth'] }}  </td>
                 {% endif %}
         </tr>
-        <tr><td>Rands</td><td></td><td></td><td></td><td></td></tr>
-        
+        <tr><td>Rands</td><td></td><td></td><td></td>
+             {% if cryptoStats['rgrowth'] > 0 %}
+            <td class="posGrowth">{{100 - cryptoStats['rgrowth'] }} </td>
+            {% else %}
+                 <td class="negGrowth">{{ 100 + cryptoStats['rgrowth'] }} </td>
+                 {% endif %}
     </table>     
     </div>
         <br> <br>
