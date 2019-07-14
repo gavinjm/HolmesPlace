@@ -168,24 +168,47 @@ return $result;
    return array('fuel' => $pmTotalFuel, 'cost' => $pmCost);     
 }
 
+/** convertToDate
+ * converts and UTC Epoch timestamp into Date/Time object.
+ * 
+ */
+public function convertToDate($UTC_Time){
+    //$epoch time is represented in Milliseconds from Luno API
+    //convert to seconds /1000 and discarding the modulo
+        $epoch = round($UTC_Time / 1000);
+        $dt = new DateTime("@$epoch");  // convert UNIX timestamp to PHP DateTime
+        return $dt->format('d-m-YY H:i:s');
+}
+
 /** myEpochConverter
  * function to test converting from UTC Epoch to current date/time
  */
-    public function myEpochConverter(){
-    
-   // $epoch = 1483228800;
-    $epoch = 1562767263822;
+    public function myEpochConverter($epoch){
+  /*  
+   if (ini_get('date.timezone')) {
+      echo '<br><br>PHP.ini date.timezone: ' . ini_get('date.timezone');
+    }
+    if (date_default_timezone_get()) {
+     echo "<br>Current Time Zone: " . date_default_timezone_get() . '<br />';
+    }
+    */
+    //$epoch time is represented in Milliseconds from Luno API
+    //convert to seconds /1000 and discarding the modulo
+    $epoch = round($epoch / 1000);
     $dt = new DateTime("@$epoch");  // convert UNIX timestamp to PHP DateTime
-    echo $dt->format('Y-m-d H:i:s'); // output = 2017-01-01 00:00:00
+   // $dt->setTimestamp($epoch);
+    echo "<br><br>Not adjusted for TimeZone: $epoch";
+    echo "<br>Using DateTime { $epoch } : ".$dt->format('Y-m-d H:i:s'); // output = 2017-01-01 00:00:00
+   
     
-    date_default_timezone_set('Africa/Johannesburg');
-          $ts = 1562767263822; //
-          //Adjust for Local Time zone -7200000
-          $ts += 7200000;
-          // $gmtTimezone = new DateTimeZone('Africa/Johannesburg');
+        $ts = $epoch+7200; //Adjust for Local Time zone -7200000
+        date_default_timezone_set('Africa/Windhoek');
+        if (date_default_timezone_get()) {
+        echo "<br><br>Time Zone Adjusted to : " . date_default_timezone_get();
+        }
           $datetime = new DateTime("@$ts");
-           
-           echo "<br><br>Timestamp Conversion:".$datetime->format('d-m-Y H:i:s');
+           echo "<br>Timestamp adjusted for TimeZone +7200000: $ts";
+           echo "<br>Timestamp Conversion { $ts } :".$datetime->format('Y-m-d H:i:s');
 }
 
 /** Temp time stuff

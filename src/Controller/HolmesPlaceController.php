@@ -28,7 +28,7 @@ class HolmesPlaceController extends AbstractController
         // Lets get the information from the GLobal $_Server[]
         $request = Request::createFromGlobals();
         $content =  $request->getContent();
-        $this->SC = new StatisticConsolidator(); // Initialise the StatistisConsolidator.
+         // Initialise the StatistisConsolidator.
         print_r($content);
         
         
@@ -39,17 +39,15 @@ class HolmesPlaceController extends AbstractController
     
     public function SummaryPage()
     {
-        
+        $this->SC = new StatisticConsolidator();
          $mn = date("m");    // Get the current month "m" = 05 06 etc.
-        
-        $this->SC->myEpochConverter();
         //$mn = 06;
         $cm = $this->GetFuelEntriesForMonth($mn);       //Current Month
         $pm = $this->getFuelEntriesForMonth($mn-1);     // Previous Month
         $cp = $this->getCryptoLatest();                 // selects from crypto_prices the latest crypto currency prices
         $cc = $this->getCurrencies();                   // Selects crypto_currency ->> the crypto names/balances.
-        $FuelStats = $SC->processMileages($cm,$pm);
-        $CrytoStats = $SC->processCryptos($cc,$cp);
+        $FuelStats = $this->SC->processMileages($cm,$pm);
+        $CrytoStats = $this->SC->processCryptos($cc,$cp);
                
      
         return $this->render('holmes_place/summary.html.twig', [
@@ -112,12 +110,14 @@ class HolmesPlaceController extends AbstractController
      * TH200196
      */
     public function updateCryptoPrices(){
-       $data = $this->getTickers();
+        $this->SC = new StatisticConsolidator();
+        $data = $this->getTickers();
        // $data = $this->curlTickers();
         
        // Get the Bitcoin XBTZAR price from the data array as a Ticker 
          $xbtzar = $this->SC->getXBTZAR($data);
          $ethzar = $this->SC->getETHZAR($data);
+         
          $cryptoPrices = new CryptoPrices();
            
            $cryptoPrices->setBtcPrice($xbtzar->getLastTrade());
