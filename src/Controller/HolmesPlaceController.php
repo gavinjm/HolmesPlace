@@ -5,7 +5,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use DateTime;
-use DateTimeZone;
 use App\Form\Type\FuelType;
 use App\Form\Type\TripType;
 use App\Form\Type\CryptoPriceType;
@@ -62,6 +61,7 @@ class HolmesPlaceController extends AbstractController
     }
     
     
+    
     /** getTickers
      ** Get latest Ticker values
      * the true value in the json_decode ensures an array is returned from json_decode
@@ -85,13 +85,14 @@ class HolmesPlaceController extends AbstractController
      * 
      */
     public function showTickerData(){
-        $repository = $this->getDoctrine()->getRepository(Ticker::class);
+       /* $repository = $this->getDoctrine()->getRepository(Ticker::class);
         $tickers = $repository->findBy(
                 array(),
                 array('id' => 'DESC')
             );
         
-        
+        */
+        $tickers= $this->getTickerPrices();
         return $this->render('holmes_place/showTickerTable.html.twig',[
             'data' => $tickers,
          
@@ -193,15 +194,33 @@ class HolmesPlaceController extends AbstractController
     }
     
     /** 
-     * getTickerPrices
+     * Old_getTickerPrices
      *  Returns latest ticker prices
+     *  Working but not flexible.
      */
-    public function getTickerPrices(){
+    public function Old_getTickerPrices(){
         $repository = $this->getDoctrine()->getRepository(Ticker::class);
         $cryptoPrices = $repository->findAll();
         return $cryptoPrices;
     }
     
+     /** 
+     * getTickerPrices
+     *  Returns latest ticker prices
+     */
+    public function getTickerPrices(){
+     $sql="select 
+           timestamp,pair,ask,bid,last_trade,rolling_24_hour_volume
+           from 
+           ticker where pair='XBTZAR'
+           ORDER BY timestamp DESC";
+      $stmnt = $this->getDoctrine()->getConnection()->prepare($sql);
+        $stmnt->execute();
+        //@tag print_r($sql);
+        return $stmnt->fetchAll();
+        
+        
+    }
     /** 
      * getFuelStatistics
      * Returns last totals for fuel and amount for a specific month.

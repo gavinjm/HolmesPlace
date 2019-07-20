@@ -12,24 +12,27 @@
     <p>The growth percentage is calculated for the last 3 entries, the last 3 are displayed below.</p>
     <div class="inlineTable">
     <table >
-        <tr><th></th><th>Name</th><th>Balance</th><th>Value</th>
+        <tr><th></th><th>Name</th><th>Balance</th><th>Value</th><th>Growth</th>
         <tr>
             <td>Bitcoin</td>
             <td>{{ cryptoStats['ccCrypto'][0].name }}</td>
             <td>{{ cryptoStats['ccCrypto'][0].balance }}</td>
             <td>{{ cryptoStats['btc_value']  }} </td>
+            <td></td>
         </tr>
         <tr>
             <td>Etherium</td>
             <td>{{ cryptoStats['ccCrypto'][1].name }}</td>
             <td>{{ cryptoStats['ccCrypto'][1].balance }}</td>
             <td>{{ cryptoStats['eth_value'] }}</td>
+            <td></td>
         </tr>
         <tr>
             <td>Rands</td>
             <td>{{ cryptoStats['ccCrypto'][2].name }}</td>
             <td> -6500.00 </td>
             <td>{{ cryptoStats['btc_value'] +  cryptoStats['eth_value'] }}</td>
+            <td>{{ -6500 + cryptoStats['btc_value'] +  cryptoStats['eth_value']  }}</td>
         </tr>
     </table>
       </div>      
