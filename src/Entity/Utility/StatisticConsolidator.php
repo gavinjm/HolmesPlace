@@ -103,13 +103,16 @@ return $result;
        
        $cmTotalFuel = $this->fuelStats($cm)['fuel'];
             $cmCost = $this->fuelStats($cm)['cost'];
-                   
-        $endcount = count($cm);
-        $cmDistance = $cm[$endcount-1]['odometer'] - $cm[0]['odometer'];     
-        if ($cmDistance==0) $cmDistance = 1;
+            
+        // Take into account no readings -0 or 1 - first reading of the month
+        if ( count($cm)< 2 ){    
+           $cmDistance = 1;  // No entries just set to 1 to avoid divide by 0
+        } else {
+            $endcount = count($cm);
+            $cmDistance = $cm[$endcount-1]['odometer'] - $cm[0]['odometer'];
+        }
         // Add everything to an associative array to send to page.
-        //$fuelStats = Array(); // An empty array.
-        $fuelStats= array(
+      $fuelStats= array(
              "pmCost" => $pmCost,
              "pmFuel" => $pmTotalFuel,
              "pmDistance" => ($pm[$pmcount]['odometer'] - $pm[0]['odometer']),

@@ -40,9 +40,9 @@ class HolmesPlaceController extends AbstractController
     {
         $this->SC = new StatisticConsolidator();
          $mn = date("m");    // Get the current month "m" = 05 06 etc.
-        //$mn = 06;
-        $cm = $this->GetFuelEntriesForMonth($mn);       //Current Month
+         $cm = $this->GetFuelEntriesForMonth($mn);       //Current Month
         $pm = $this->getFuelEntriesForMonth($mn-1);     // Previous Month
+        print_r($pm);
         $cp = $this->getCryptoLatest();                 // selects from crypto_prices the latest crypto currency prices
         $cc = $this->getCurrencies();                   // Selects crypto_currency ->> the crypto names/balances.
         $FuelStats = $this->SC->processMileages($cm,$pm);
