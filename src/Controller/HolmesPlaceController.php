@@ -13,6 +13,7 @@ use App\Entity\Trip;
 use App\Entity\CryptoPrices;
 use App\Entity\Ticker;
 use App\Entity\Utility\StatisticConsolidator;
+use App\Entity\Utility\ProcessCSV;
 
 
 
@@ -21,7 +22,7 @@ use App\Entity\Utility\StatisticConsolidator;
 class HolmesPlaceController extends AbstractController
 {
     /* Global class private variables */
-    public $SC; //= new StatisticConsolidator();
+    private $SC; //= new StatisticConsolidator();
     
     public function Index(){
         // Lets get the information from the GLobal $_Server[]
@@ -42,7 +43,7 @@ class HolmesPlaceController extends AbstractController
          $mn = date("m");    // Get the current month "m" = 05 06 etc.
          $cm = $this->GetFuelEntriesForMonth($mn);       //Current Month
         $pm = $this->getFuelEntriesForMonth($mn-1);     // Previous Month
-        print_r($pm);
+        // print_r($pm);
         $cp = $this->getCryptoLatest();                 // selects from crypto_prices the latest crypto currency prices
         $cc = $this->getCurrencies();                   // Selects crypto_currency ->> the crypto names/balances.
         $FuelStats = $this->SC->processMileages($cm,$pm);
@@ -335,9 +336,89 @@ class HolmesPlaceController extends AbstractController
         ]);
     }
     
+    /** Process each Transaction to extract the ACTION,CURRENCY and AMOUNT from the description field. 
+     * @param type associative array $entry
+     * @return string
+     */
+    public function ExtractDetail($entry){
+        // $transaction['description']
+        $str = explode(' ', $entry['description']);
+       return $str;
+    }
     
-    
-     /** 
+    /** CombineArrays
+     * 
+     */
+    public function CombineArrays($result,$parsed){
+        $final=array();
+        $sz = (count($result) == count($parsed)?count($result):0);
+        if ($sz!=0){ // Arrays must be same sizes
+
+            for ($i=0;$i<$sz; $i++){ // Loop through the array
+                // Each element is an array and we need to add additional entries
+              $final[$i] =0; 
+            }
+            
+        }
+    }
+    /** DisplayTransactions
+     * 
+     * @param Request $request
+     */
+    public function DisplayTransactions(Request $request){
+          $em = $this->getDoctrine()->getManager();
+          $sql = "select timestamp,description,currency, balance, available_balance from transactions ORDER BY timestamp asc";
+          $stmt = $em->getConnection()->prepare($sql);
+          $stmt->execute();
+          $result = $stmt->fetchAll();
+         $i=0;
+          foreach($result as $entry){
+             $parsed[$i++] = $this->ExtractDetail($entry);
+          }
+          // Now loop through the result array again and add the individuall entrys to the end of each line.
+          return $this->render('holmes_place/btcTransactions.html.twig',
+             ['combined'=>$result,'parsed'=>$parsed]);        
+    }
+    public function ReadInFiles(Request $request){
+        
+         $csv = new ProcessCSV();
+         $btcTransactions = $csv->readIn("Bitcoin");
+         $ethTransactions = $csv->readIn("Etherium");
+              
+     return 0;
+        
+    }
+   
+    /**Saves the transactions to the transaction database.
+    *
+    * 
+    */
+    public function SaveTransactions($t){
+        
+        for ($x=0; $x < count($t); $x++){
+          echo "<br>".$x. "--".$t[$x];  
+        }
+        $cc_tr_id = ($t[9]==''? 'none':$t[9]);
+        $cc_add = ($t[10]==0? 0:$t[10]);
+        $val = ($t[11]==''? 'none':$t[11]);
+       
+        // Convert the date/time in $t[2] to timestamp.
+        // $timestamp = date("Y-m-d H:i:s");
+         
+         $em = $this->getDoctrine()->getManager();
+         //print_r($t); 
+         $sql = "INSERT INTO `transactions` ";
+        $sql .= "(`wallet_id`,`timestamp`,`description`,`currency`,";
+        $sql .= "`balance_delta`,`available_bal_delta`,`balance`,`available_balance` ";
+        $sql .= ",`cc_transaction_id`,`cc_address`,`value`)";
+        $sql .= " VALUES ('$t[0]', UNIX_TIMESTAMP('$t[2]'),'$t[3]','$t[4]',$t[5],$t[6],$t[7],$t[8],'$cc_tr_id',$cc_add,'$val')";
+               
+        echo "<br>SQL = ". $sql;
+      $stmt = $em->getConnection()->prepare($sql);
+       // $stmt->bindValue(1,$mnth);
+       $stmt->execute();
+    }
+    /** 
      * Success page for all database entries
      * @param string $action 
      */

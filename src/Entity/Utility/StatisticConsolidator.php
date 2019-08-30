@@ -49,6 +49,7 @@ return $result;
 
 /** getETHZAR
      * extracts the Etherium/Rand pait,ETHZAR, price details, value from the array.
+     * $data = array containing prices of 5 currency pairs. 
      * @returns a Ticker
      */
     public function getETHZAR($data){
@@ -175,7 +176,7 @@ return $result;
  * converts and UTC Epoch timestamp into Date/Time object.
  * 
  */
-public function convertToDate($UTC_Time){
+    public function convertToDate($UTC_Time){
     //$epoch time is represented in Milliseconds from Luno API
     //convert to seconds /1000 and discarding the modulo
         $epoch = round($UTC_Time / 1000);

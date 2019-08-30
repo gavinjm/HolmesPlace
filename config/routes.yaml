@@ -24,7 +24,11 @@ summary:
 fuel:
     path:   /fuel
     controller: App\Controller\HolmesPlaceController::FuelEntry
-
+    
+readin:
+    path: /readin
+    controller: App\Controller\HolmesPlaceController::DisplayTransactions
+    
 task_success:
     path:   /task_success/{slug}
     defaults:

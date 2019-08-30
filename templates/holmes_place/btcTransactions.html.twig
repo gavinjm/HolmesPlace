@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Success Page {% endblock %}
+
+{% block body %}
+   
+     <div class="main">    
+         <p>Downloaded CSV files are read into the databases here.</p>
+         <table border="2">
+        <tr><th>Timestamp</th><th>Description</th><th>Currency</th>
+            <th>Balance</th><th>Avail Bal</th>
+            </tr>   
+            {{ dump(parsed) }}
+            <hr>
+    {% for tick in combined %} 
+     
+        <tr>
+            <td> {{ tick['timestamp'] }} </td>    
+            <td> {{ tick['description'] }} </td>
+            <td> {{ tick['currency'] }} </td>
+            <td> {{ tick['balance'] }} </td>
+            <td> {{ tick['available_balance'] }} </td>
+            
+            
+        </tr>
+     
+    {% endfor %}
+    
+    
+     </table>
+         
+  </div>
+{% endblock %}
