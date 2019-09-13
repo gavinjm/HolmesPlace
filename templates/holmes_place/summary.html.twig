@@ -78,16 +78,23 @@
         <br> <br>
     <div class="inlineTable">
             <table>
-                <tr><th>Fuel Statistics</th><th>Pvs</th><th>Cur</th></tr>
-                <tr><td>Fuel Used</td><td style="text-align:right" >{{ fuelStats['pmFuel'] }}</td>
-            <td style="text-align:right" >{{ fuelStats['cmFuel'] }}</td></tr>
+                <tr><th>Fuel Statistics</th><th>{{ month-2 }}</th><th>{{ month-1 }}</th><th>{{ month }}</th></tr>
+                <tr>
+                    <td>Fuel Used</td>
+                    <td style="text-align:right" >{{ fuelStats['ppmFuel'] }}</td>
+                    <td style="text-align:right" >{{ fuelStats['pmFuel'] }}</td>
+                    <td style="text-align:right" >{{ fuelStats['cmFuel'] }}</td></tr>
+            
                 <tr><td>Fuel Cost</td>
+            <td style="text-align:right">{{ fuelStats['ppmCost'] }}</td>       
             <td style="text-align:right">{{ fuelStats['pmCost'] }}</td>
             <td style="text-align:right">{{ fuelStats['cmCost'] }}</td></tr>
                 <tr><td>Distance Travelled</td>
+            <td style="text-align:right">{{ fuelStats['ppmDistance'] }}</td>        
             <td style="text-align:right">{{ fuelStats['pmDistance'] }}</td>
             <td style="text-align:right">{{ fuelStats['cmDistance'] }}</td></tr>
                 <tr><td>Fuel Efficiency</td>
+            <td style="text-align: right">{{ fuelStats['ppmEconomy'] }} </td>        
             <td style="text-align: right">{{ fuelStats['pmEconomy'] }} </td>
             <td style="text-align: right">{{ fuelStats['cmEconomy'] }} </td></tr>
                 

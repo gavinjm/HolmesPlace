@@ -96,9 +96,13 @@ return $result;
   * @parameter $data and associative array with the data from fuel statistics.
   * @returns an associative array with of the fuel statistics
   */   
-    public function processMileages($cm,$pm){
-    $pmcount = count($pm)-1; 
+    public function processMileages($cm,$pm,$ppm){
+    $pmcount = count($pm)-1;
+    $ppmcount = count($ppm)-1;
     
+       $ppmFuel = $this->fuelStats($ppm)['fuel'];
+       $ppmCost = $this->fuelStats($ppm)['cost'];
+       
        $pmTotalFuel = $this->fuelStats($pm)['fuel'];
             $pmCost = $this->fuelStats($pm)['cost'];
        
@@ -114,6 +118,10 @@ return $result;
         }
         // Add everything to an associative array to send to page.
       $fuelStats= array(
+             "ppmCost" => $ppmCost,
+             "ppmFuel" => $ppmFuel,
+             "ppmDistance" => ($ppm[$ppmcount]['odometer'] - $ppm[0]['odometer']),
+             "ppmEconomy" => round(($ppmFuel / ($ppm[$ppmcount]['odometer'] - $ppm[0]['odometer']) * 100),2), 
              "pmCost" => $pmCost,
              "pmFuel" => $pmTotalFuel,
              "pmDistance" => ($pm[$pmcount]['odometer'] - $pm[0]['odometer']),

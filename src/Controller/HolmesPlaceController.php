@@ -41,12 +41,15 @@ class HolmesPlaceController extends AbstractController
     {
         $this->SC = new StatisticConsolidator();
          $mn = date("m");    // Get the current month "m" = 05 06 etc.
+         
          $cm = $this->GetFuelEntriesForMonth($mn);       //Current Month
-        $pm = $this->getFuelEntriesForMonth($mn-1);     // Previous Month
+         $pm = $this->getFuelEntriesForMonth($mn-1);     // Previous Month
+         $ppm = $this->GetFuelEntriesForMonth($mn-2);    // Previous previous Month
+         
         // print_r($pm);
         $cp = $this->getCryptoLatest();                 // selects from crypto_prices the latest crypto currency prices
         $cc = $this->getCurrencies();                   // Selects crypto_currency ->> the crypto names/balances.
-        $FuelStats = $this->SC->processMileages($cm,$pm);
+        $FuelStats = $this->SC->processMileages($cm,$pm,$ppm);
         $CrytoStats = $this->SC->processCryptos($cc,$cp);
                
      
@@ -361,6 +364,7 @@ class HolmesPlaceController extends AbstractController
             
         }
     }
+    
     /** DisplayTransactions
      * 
      * @param Request $request
@@ -379,6 +383,7 @@ class HolmesPlaceController extends AbstractController
           return $this->render('holmes_place/btcTransactions.html.twig',
              ['combined'=>$result,'parsed'=>$parsed]);        
     }
+    
     public function ReadInFiles(Request $request){
         
          $csv = new ProcessCSV();
