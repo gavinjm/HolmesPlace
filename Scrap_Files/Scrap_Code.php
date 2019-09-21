@@ -45,6 +45,20 @@ class CR_PriceType extends AbstractType
    }
 
 }
+/*
+ * *
+ <h1> {{ action }}! ✅</h1>
+      
+ 
+   
+    <ul>
+        <li>Your controller at <code><a href="{{ '/var/www/html/HolmesPlace/src/Controller/HolmesPlaceController.php'|file_link(0) }}">src/Controller/HolmesPlaceController.php</a></code></li>
+        <li>Your template at <code><a href="{{ '/var/www/html/HolmesPlace/templates/holmes_place/index.html.twig'|file_link(0) }}">templates/holmes_place/index.html.twig</a></code></li>
+    </ul>
+*
+ */
+
+
 /*//////////////////// Table from index page
 <table border="1" padding="2">
       <tr><th>Date</th><th>Bitcoin</th><th>Etherium</th></tr>

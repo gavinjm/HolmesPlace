@@ -24,6 +24,12 @@ class HolmesPlaceController extends AbstractController
     /* Global class private variables */
     private $SC; //= new StatisticConsolidator();
     
+   
+    public function admin()
+    {
+        return new Response('<html><body>Admin page!</body></html>');
+    }
+    
     public function Index(){
         // Lets get the information from the GLobal $_Server[]
         $request = Request::createFromGlobals();
@@ -39,7 +45,8 @@ class HolmesPlaceController extends AbstractController
     
     public function SummaryPage()
     {
-        $this->SC = new StatisticConsolidator();
+         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+         $this->SC = new StatisticConsolidator();
          $mn = date("m");    // Get the current month "m" = 05 06 etc.
          
          $cm = $this->GetFuelEntriesForMonth($mn);       //Current Month
@@ -53,7 +60,7 @@ class HolmesPlaceController extends AbstractController
         $CrytoStats = $this->SC->processCryptos($cc,$cp);
                
      
-        return $this->render('holmes_place/summary.html.twig', [
+        return $this->render('private/summary.html.twig', [
             'controller_name' => 'Holmes Place Website',
             'current_date' => date("F j, Y, g:i a"),
             'month' => $mn,
@@ -115,6 +122,7 @@ class HolmesPlaceController extends AbstractController
      * TH200196
      */
     public function updateCryptoPrices(){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');     
         $this->SC = new StatisticConsolidator();
         $data = $this->getTickers();
        // $data = $this->curlTickers();
@@ -148,6 +156,7 @@ class HolmesPlaceController extends AbstractController
      * 
      */
     public function CryptoEntry(Request $request){
+       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');     
        $price = new CryptoPrices(); 
        $form = $this->createForm(CryptoPriceType::class,$price);
        $form->handleRequest($request);
@@ -283,6 +292,7 @@ class HolmesPlaceController extends AbstractController
      * 
      */
     public function TripEntry(Request $request){
+         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $trip = new Trip();
         $form = $this->createForm(TripType::class,$trip);
         $form->handleRequest($request);
@@ -314,7 +324,7 @@ class HolmesPlaceController extends AbstractController
      */
     public function FuelEntry(Request $request){
         
-        
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');        
         $fuelEntry = new FuelLog();
         $form = $this->createForm(FuelType::class,$fuelEntry);
         $form->handleRequest($request);

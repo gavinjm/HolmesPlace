@@ -5,7 +5,11 @@
 {% block body %}
    
      <div class="main">    
-    <h1>Action Required: {{ action }}! ✅</h1>
+   <h3>{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <p>Email: {{ app.user.email }}</p>
+{% endif %}</h3>
+         
+         <h1>Action Required: {{ action }}! ✅</h1>
  <form action="{{ path('fuel') }}" method="post" >
   {{ form_widget(form) }}  
    

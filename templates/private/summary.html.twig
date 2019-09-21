@@ -8,6 +8,9 @@
     
     <h3> Todays Date: {{ current_date }} </h3>
     <h3> Month: {{ month }} </h3>
+    <h3>{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <p>Email: {{ app.user.email }}</p>
+{% endif %}</h3>
     
     <p>The growth percentage is calculated for the last 3 entries, the last 3 are displayed below.</p>
     <div class="inlineTable">

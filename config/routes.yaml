@@ -1,10 +1,19 @@
 index:
     path:   /
     controller: App\Controller\HolmesPlaceController::Index
+
+login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logout   
+holmesplace:
+    path: /admin
+    controller: App\Controller\HolmesPlaceController::Admin
 trip:
     path:   /trip
     controller: App\Controller\HolmesPlaceController::TripEntry
-
 crypto:
     path: /crypto
     controller: App\Controller\HolmesPlaceController::CryptoEntry
