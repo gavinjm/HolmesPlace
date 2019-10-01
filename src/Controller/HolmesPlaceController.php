@@ -30,16 +30,18 @@ class HolmesPlaceController extends AbstractController
         return new Response('<html><body>Admin page!</body></html>');
     }
     
-    public function Index(){
+    public function Index(Request $request){
         // Lets get the information from the GLobal $_Server[]
-        $request = Request::createFromGlobals();
         $content =  $request->getContent();
+        $ip = $request->getClientIp();
          // Initialise the StatistisConsolidator.
         print_r($content);
         
         
         return $this->render('holmes_place/homepage.html.twig', [
             'action' => 'Index Page',
+            'ip' => $ip,
+            'content' => $content,
         ]);
     }   
     
