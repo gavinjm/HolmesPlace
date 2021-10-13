@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FuelLogRepository")
  */
-class FuelLog
+class Fuel
 {
     /**
      * @ORM\Id()
@@ -19,7 +19,7 @@ class FuelLog
     /**
      * @ORM\Column(type="date")
      */
-    private $Date;
+    private $date;
 
     /**
      * @ORM\Column(type="integer")
@@ -46,6 +46,11 @@ class FuelLog
      */
     private $tankfull;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $vehicle;
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -53,12 +58,12 @@ class FuelLog
 
     public function getDate(): ?\DateTimeInterface
     {
-        return $this->Date;
+        return $this->date;
     }
 
     public function setDate(\DateTimeInterface $Date): self
     {
-        $this->Date = $Date;
+        $this->date = $Date;
 
         return $this;
     }
@@ -119,6 +124,18 @@ class FuelLog
     public function setTankfull(bool $tankfull): self
     {
         $this->tankfull = $tankfull;
+
+        return $this;
+    }
+
+    public function getVehicle(): ?int
+    {
+        return $this->vehicle;
+    }
+
+    public function setVehicle(?int $vehicle): self
+    {
+        $this->vehicle = $vehicle;
 
         return $this;
     }

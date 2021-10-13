@@ -1,4 +1,21 @@
 /**
+echo "<br>ID: ".$item['id']."  Date: ".$item['timestamp']  
+                   ."  Description: ".$item['description']." Bal_Delta:".$item['balance_delta']
+                   ."  Avail_Bal_Delta:".$item['available_bal_delta']."  Balance: ".$item['balance']
+                   ." : ".$balanceCount;
+*/
+
+
+/*
+//$balArray = Array($item['balance'],$item['balance_delta'], $item['available_bal_delta']);
+          // $descriptionCount = $this->findByDescription($item['description']);
+          // $dateCount = $this->findByDate($item['timestamp']);
+          // $balanceCount = $this->findByBalances($balArray);
+
+*/
+
+
+/**
  foreach ($data as $ticker) {
            foreach ($ticker as $currency){
              if ($currency['pair'] == "XBTZAR"){
@@ -183,4 +200,112 @@ class CR_PriceType extends AbstractType
         </tr>
        {% endfor %}
     {% endfor %}
+ */
+
+
+/*
+  
+     * getFuelStatistics
+     * Returns last totals for fuel and amount for a specific month.
+
+    public function GetFuelStatistics($mnth){
+       
+    $em = $this->getDoctrine()->getManager();
+    // $month = "'2019-".$mnth."%'";
+    
+    $sql = "SELECT ROUND(SUM(liters),2) as Fuel, ROUND(SUM(amount),2)as Cost FROM fuel_log where MONTH(date) like ".$mnth;
+    //$sql .= " AND YEAR(date) like '2020'";
+    $stmt = $em->getConnection()->prepare($sql);
+    $stmt->bindValue(1,$mnth);
+    $stmt->execute();
+    return $stmt->fetchAll();
+    }
+ */
+
+/**
+     * GetTripEntries
+     * Returns all trip entries from table trips
+     * 
+  
+    public function GetTripEntries(){
+       
+        $repository = $this->getDoctrine()->getRepository(Trip::class);
+        $tripEntry = $repository->findAll();
+        return $tripEntry;
+    }
+ * 
+ *    
+ */
+
+/*
+ * 
+ *           <table>
+              <th>Year</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th>
+              <th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
+              <tr>
+              <td>2019</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+              </tr>
+          <tr><td>2020</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          </table>
+ * 
+ * 
+ * 
+ * <form name="petrol_stats" action="/vehicle" method="post">
+              <table>
+                  <tr><th>Year</th><th>Month</th><th></th>
+                  </tr>
+                  <tr>
+                      <td>
+              <select name="year" id="year">
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                  <option value="2020">2020</option>
+              </select>
+                      </td>
+                      <td>
+              <select name="month" id="month">
+                  <option value="0">All</option>
+                  <option value="1">Jan</option>
+                  <option value="2">Feb</option>
+                  <option value="3">Mar</option>
+                  <option value="4">Apr</option>
+                  <option value="5">May</option>
+                  <option value="6">Jun</option>
+                  <option value="7">July</option>
+                  <option value="8">Aug</option>
+                  <option value="9">Sep</option>
+                  <option value="10">Oct</option>
+                  <option value="11">Nov</option>
+                  <option value="12">Dec</option>
+              </input>
+              </td>
+              <td><input type="submit"/></td>
+                </tr>
+              </table>      
+          </form>
+ * 
+ */
+/*
+ * <div class="inlineTable">
+            <table>
+                <tr><th>Fuel Statistics</th><th>{{ month-2 }}</th><th>{{ month-1 }}</th><th>{{ month }}</th></tr>
+                <tr>
+                    <td>Fuel Used</td>
+                    <td style="text-align:right" >{{ fuelStats['ppmFuel'] }}</td>
+                    <td style="text-align:right" >{{ fuelStats['pmFuel'] }}</td>
+                    <td style="text-align:right" >{{ fuelStats['cmFuel'] }}</td></tr>           
+                <tr><td>Fuel Cost</td>
+            <td style="text-align:right">{{ fuelStats['ppmCost'] }}</td>       
+            <td style="text-align:right">{{ fuelStats['pmCost'] }}</td>
+            <td style="text-align:right">{{ fuelStats['cmCost'] }}</td></tr>
+                <tr><td>Distance Travelled</td>
+            <td style="text-align:right">{{ fuelStats['ppmDistance'] }}</td>        
+            <td style="text-align:right">{{ fuelStats['pmDistance'] }}</td>
+            <td style="text-align:right">{{ fuelStats['cmDistance'] }}</td></tr>
+                <tr><td>Fuel Efficiency</td>
+            <td style="text-align: right">{{ fuelStats['ppmEconomy'] }} </td>        
+            <td style="text-align: right">{{ fuelStats['pmEconomy'] }} </td>
+            <td style="text-align: right">{{ fuelStats['cmEconomy'] }} </td></tr>
+                
+            </table>  
  */

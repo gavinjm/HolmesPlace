@@ -93,14 +93,15 @@ return $result;
  
  
 /** processMileages
-  * @parameter $data and associative array with the data from fuel statistics.
+  * @parameter $cm,$pm,$ppm are associative array with the data from fuel statistics.
   * @returns an associative array with of the fuel statistics
   */   
     public function processMileages($cm,$pm,$ppm){
-    $pmcount = count($pm)-1;
-    $ppmcount = count($ppm)-1;
+        
+        $pmcount = count($pm)-1;
+        $ppmcount = count($ppm)-1;
     
-       $ppmFuel = $this->fuelStats($ppm)['fuel'];
+       $ppmTotalFuel = $this->fuelStats($ppm)['fuel'];
        $ppmCost = $this->fuelStats($ppm)['cost'];
        
        $pmTotalFuel = $this->fuelStats($pm)['fuel'];
@@ -108,24 +109,33 @@ return $result;
        
        $cmTotalFuel = $this->fuelStats($cm)['fuel'];
             $cmCost = $this->fuelStats($cm)['cost'];
-            
-        // Take into account no readings -0 or 1 - first reading of the month
+          
+         //   print_r($cm);
+           $pmDistance = 1;
+     if (($pm[$pmcount]['odometer'] - $pm[0]['odometer']) > 0 ){
+          $pmDistance = $pm[$pmcount]['odometer'] - $pm[0]['odometer'];
+        }
+        
+        // Take into account number of readings is 0 or 1 , ie no readings or first reading of the month
         if ( count($cm)< 2 ){    
            $cmDistance = 1;  // No entries just set to 1 to avoid divide by 0
-        } else {
-            $endcount = count($cm);
-            $cmDistance = $cm[$endcount-1]['odometer'] - $cm[0]['odometer'];
+        } else {     
+            $cmDistance = $cm[1]['odometer'] - $cm[0]['odometer'];
         }
+        
+        
+        // Calculate fuel efficiency
+       
         // Add everything to an associative array to send to page.
       $fuelStats= array(
              "ppmCost" => $ppmCost,
-             "ppmFuel" => $ppmFuel,
+             "ppmFuel" => $ppmTotalFuel,
              "ppmDistance" => ($ppm[$ppmcount]['odometer'] - $ppm[0]['odometer']),
-             "ppmEconomy" => round(($ppmFuel / ($ppm[$ppmcount]['odometer'] - $ppm[0]['odometer']) * 100),2), 
+             "ppmEconomy" => 0, //round(($ppmTotalFuel / ($ppm[$ppmcount]['odometer'] - $ppm[0]['odometer']) * 100),2), 
              "pmCost" => $pmCost,
              "pmFuel" => $pmTotalFuel,
-             "pmDistance" => ($pm[$pmcount]['odometer'] - $pm[0]['odometer']),
-             "pmEconomy" => round(($pmTotalFuel / ($pm[$pmcount]['odometer'] - $pm[0]['odometer']) * 100),2),
+             "pmDistance" => $pmDistance,
+             "pmEconomy" => round(($pmTotalFuel / $pmDistance) * 100,2),
              "cmCost" => $cmCost,
              "cmFuel" => $cmTotalFuel,
              "cmDistance" => $cmDistance,
@@ -167,9 +177,9 @@ return $result;
 /** fuelStats
  * @parameters $fuel_array
  * @returns: the sum of the fuel entries.
- * 
  */
     public function fuelStats($fuelArray){
+        
     $pmcount = count($fuelArray);
     $pmTotalFuel=0;
     $pmCost=0;

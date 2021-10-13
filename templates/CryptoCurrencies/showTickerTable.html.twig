@@ -1,0 +1,35 @@
+{% extends 'crypto_base.html.twig' %}
+
+{% block title %} Current Crypto Prices {% endblock %}
+
+{% block body %}
+     <div class="main">  
+           
+   <img src="../../grid.php?data={{ graphstring }}&pair={{ pair }}" alt="Crypto Price" width="350" height="250" >
+      <form action="./{{ pair }}" method="GET">
+          <button name="period" value="P1W">7 Days</button>
+          <button name="period" value="P1D">24 Hrs</button>
+          <button name="period" value="P1M">30 Days</button>
+          <input  type="hidden" name="pair" id="pair" value="{{ pair }}">
+      </form>
+    
+    
+    <h1> Date of Transaction {% if dte is defined %} {{ dte }} {% endif %}</h1>
+    <table border="2">
+        <tr><th>Transaction Date</th><th>Pair</th><th>Ask</th><th>Bid</th><th>Last Trade</th><th>Volume</th>
+            </tr>   
+    {% for tick in data %} 
+     
+        <tr>
+            <td> {{ tick.date | date("d-m-Y H:i:s") }} </td>
+            <td> {{ tick.pair }} </td>
+            <td> {{ tick.ask }}  </td>
+            <td> {{ tick.bid }} </td>
+            <td> {{ tick.last_trade }} </td>
+            <td> {{ tick.rolling_24_hour_volume }} </td>
+        </tr>
+     
+    {% endfor %}
+     </table>
+   
+{% endblock %}

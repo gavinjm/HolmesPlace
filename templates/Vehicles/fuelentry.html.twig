@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'vehicle_base.html.twig' %}
 
 {% block title %} Fuel Entry {% endblock %}
 
@@ -10,8 +10,10 @@
 {% endif %}</h3>
          
          <h1>Action Required: {{ action }}! ✅</h1>
- <form action="{{ path('fuel') }}" method="post" >
-  {{ form_widget(form) }}  
+ <form action="{{ path('vehicle_fuel') }}" method="post" >
+     {{ form(form) }}
+    
+     
    
  </form>
   

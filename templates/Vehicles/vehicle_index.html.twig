@@ -1,0 +1,64 @@
+{% extends 'vehicle_base.html.twig' %}
+
+{% block title %} Vehicle Home Page {% endblock %}
+
+{% block body %}
+   
+    <div class="main">
+         <h1>Vehicle Controller Page</h1>
+               
+          <form action="{{ path('vehicle') }}" method="post" >
+        {{ form_start(form) }}  
+          <table class="inlineTable"> 
+              <tr>
+                  <td>{{ form_row(form.year) }}</td>
+                  <td>{{ form_row(form.month) }}</td>
+                  <td>{{ form_row(form.Go) }}</td>
+              </tr>
+          </table>
+        {{ form_end(form) }}
+            </form>
+          
+          <h1>Data</h1>
+        <table>
+            <th>Date</th><th>Odometer</th><th>Liters</th><th>Amount</th><th>Cost/Liter</th>
+            <th>Dist Travelled</th><th>Location</th><th>Tank Full (1=Yes)</th>
+                {% set fuelTotal=0 %}
+                {% set costTotal=0 %}
+                {% set Distance=0 %}
+                {% set totalDistance=0 %}
+                {% for entry in data %}
+            <tr>
+                <td> {{ entry.date }} </td>
+                <td> {{ entry.odometer }} </td>
+                <td> {{ entry.liters }} </td>
+                <td> {{ entry.amount }} </td>
+                <td> {{ (entry.amount / entry.liters)|round(1, 'ceil') }}
+                <td> {% if entry.odometer == 0 %}
+                      {% set Distance = 0 %}
+                       {% else %}
+                          {{ (entry.odometer - Distance) }}
+                          {% set totalDistance = totalDistance + (entry.odometer - Distance) %}
+                          {% set Distance = entry.odometer %}
+                      {% endif %} 
+                <td> {{ entry.location }} </td>
+                <td> {{ entry.tankfull }} </td>
+            </tr>
+                    {% set fuelTotal = fuelTotal + entry.liters %}
+                    {% set costTotal = costTotal + entry.amount %}
+                    
+                {% endfor %}
+                <tr><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>Totals</td><td></td><td>{{ fuelTotal }}</td><td>{{ costTotal }}</td>
+                <td></td><td>{{ totalDistance }}</td><td></td><td></td></tr>
+        </table>
+        </ul>
+             
+              
+
+            
+             
+            
+       
+    </div>
+{% endblock %}

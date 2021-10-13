@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class TransactionRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Transaction::class);
     }
@@ -36,15 +36,25 @@ class TransactionRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Transaction
+   
+    public function findOneByTimestamp($value): ?Transaction
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
+            ->andWhere('t.description = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+   
+    public function findByDescription($value){
+        $query = "select id,wallet_id, timestamp, description, currency, balance_delta,
+                 available_bal_delta, balance, available_balance, cc_transaction_id, cc_address, value          
+           from Transaction
+           where description like '%".$value."%'";
+        $stmnt = $this->getDoctrine()->getConnection()->prepare($query);
+        $stmnt->execute();
+        return $stmnt->fetchAll();
+        
+    }
 }

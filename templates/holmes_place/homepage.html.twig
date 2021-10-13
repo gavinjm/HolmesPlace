@@ -5,8 +5,59 @@
 {% block body %}
    
      <div class="main">
-         <h1>{{ action }}</h1>
-         <p>Ip address: {{ ip }} </p>
+        <form>
+        <label for="search">
+            <span class="visually-hidden">Search</span>
+            <input id="search" name="search" />
+            <button class="visually-hidden">Submit</button>
+        </label>
+        </form>
+        <table class=inlineTable border="2">
+            <caption>Location</caption>
+                 <tr><td> Location </td><td>{{ location['location'] }}</td></tr>
+                 <tr><td> Region</td><td> {{ location['region'] }} </td></tr>
+                 <tr><td> Country</td><td> {{ location['country'] }}</td></tr>
+                 <tr><td> Latitude </td><td>{{ location['latitude'] }}</td></tr>
+                 <tr><td> Longitude</td><td> {{ location['longitude'] }} </td></tr>
+                 <tr><td> Time Zone</td><td> {{ location['timezone'] }}</td></tr>
+                 
+         </table>
+                 {% if cryptoPrices is defined %}    
+         <table class=inlineTable border="2">
+             <caption>Latest Crypto Prices</caption>
+        <tr><th>Date</th><th>Bitcoin</th><th>Etherium</th></tr>   
+        <tr>
+            <td> {{ cryptoPrices[0].date }} </td>
+            <td> {{ cryptoPrices[0].btc_price }} </td>
+            <td> {{ cryptoPrices[0].eth_price }} </td>
+        </tr>
+        
+        <tr><td colspan="3">.</td></tr>
+        <tr><td colspan="3">.</td></tr>
+        <tr><td colspan="3">.</td></tr>
+        <tr><td colspan="3">.</td></tr>
+        
+        
+   {% endif %}
+  
+     </table>
+         <table class= inlineTable border="2">
+             <caption>Weather Details</caption>
+                 <tr><td>Last Update</td><td> {{ weatherdata['last_updated'] }}</td></tr>
+                 <tr><td>Temperature Celsius</td><td> {{ weatherdata['temp_c'] }}</td></tr>
+                 <tr><td>Wind Direction</td><td> {{ weatherdata['wind_dir'] }}</td></tr>
+                 <tr><td>Pressure(mb)</td><td> {{ weatherdata['pressure_mb'] }}</td></tr>
+                 <tr><td>Ultra Violet Index</td><td> {{ weatherdata['uv'] }}</td></tr>
+                 <tr><td>Rainfall</td><td> {{ weatherdata['precip_mm'] }}</td></tr>
+                 
+            
+         </table>
+                 <p>                            
+                  <img src="grid.php?data={{ graphstring }}&pair=Barometric Pressure: " alt="Crypto Price" " alt="Air Pressure"  width="250" height="250"/>
+                 </p>
+                 <a href="https://www.weatherapi.com/" title="Free Weather API">
+                 <img src='//cdn.weatherapi.com/v4/images/weatherapi_logo.png' alt="Weather data by WeatherAPI.com" border="0"></a>
+
          
   </div>
 {% endblock %}

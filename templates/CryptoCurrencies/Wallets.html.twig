@@ -1,0 +1,30 @@
+{% extends 'crypto_base.html.twig' %}
+
+{% block title %} {{ page }} {% endblock %}
+
+{% block body %}
+    <div class="main">   
+ {% if page is defined %}
+     <h2>   {{ page }} </h2>
+     {% endif %}
+      
+ {% if data is defined %}
+    
+    <table border="2">
+        <tr><th>ID</th><th>Name</th><th>Balance</th><th>Availabale</th>
+            </tr>   
+    {% for tick in data %} 
+     
+        <tr>
+            <td> {{ tick['id'] }}</td>
+            <td> {{ tick['name'] }} </td>
+            <td> {{ tick['balance'] }} </td>
+            <td> {{ tick['available'] }}  </td>
+        </tr>
+     
+    {% endfor %}
+     </table>
+    {% endif %}
+                        
+  </div>
+{% endblock %}

@@ -7,9 +7,9 @@ background-color: lightblue;
 }
 /* The navigation bar */
 .navbar {
-  position: fixed;  /* Set the navbar to fixed position */
-  top: 0;        /* Position the navbar at the bottom of the page */
-  width: 100%;      /* Full width */
+  position: fixed;       /* Set the navbar to fixed position */
+  top: 0;                /* Position the navbar at the bottom of the page */
+  width: 100%;           /* Full width */
 }
 
 /* Links inside the navbar */
@@ -65,3 +65,65 @@ th{
        font-weight: bold;
        text-align:right;
   }
+  
+  /* Dropdown lists */
+  
+  /* Style The Dropdown Button */
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+  .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+}

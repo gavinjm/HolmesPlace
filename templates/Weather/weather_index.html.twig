@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Weather Home Page {% endblock %}
+
+{% block body %}
+   
+    <div class="main">
+                       
+        
+      {% if hives is defined %}
+        <table class=inlineTable border="2">
+       <caption>Bee Hives</caption>
+       <tr><th>Number</th><th>Location</th><th>Populated</th><th>Type</th>
+            </tr>   
+    {% for box in hives %} 
+     
+        <tr>
+            <td> {{ box.hive }} </td>
+            <td> {{ box.location }} </td>
+            <td> {{ box.Date }} </td>
+            <td> {{ box.hive_type }}  </td>
+           
+        </tr>
+     
+    {% endfor %}
+     </table>     
+      
+      
+      {% endif %}
+         
+      {% if hive_output  is defined %}    
+         <table class=inlineTable border="2">
+             <caption>Hive Outputs</caption>
+        <tr><th>Honey</th><th>Wax</th>
+            </tr>   
+        <tr>
+            <td> {{ hive_output[0].honey }} </td>
+            <td> {{ hive_output[0].wax }} </td>
+            
+        </tr>
+        <tr><td colspan="2">.</td></tr>
+        <tr><td colspan="2">.</td></tr>
+        <tr><td colspan="2">.</td></tr>
+        
+    
+   {% endif %}
+   {% if diary is defined %}
+   <table border="2">
+       <caption>Diary</caption>
+       <tr><th>Date</th><th>Location</th><th>Activity</th><th>Entry</th>
+            </tr>   
+    {% for entry in diary %} 
+     
+        <tr>
+            <td> {{ entry.date | date("d-m-Y") }} </td>
+            <td> {{ entry.location }} </td>
+            <td> {{ entry.activity }} </td>
+            <td align="left"> {{ entry.entry_details }}  </td>
+           
+        </tr>
+     
+    {% endfor %}
+     </table>   
+     {% endif %}
+           
+
+            
+             
+            
+       
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'crypto_base.html.twig' %}
+
+{% block title %} {{ page }} {% endblock %}
+
+{% block body %}
+   <div class="main">
+            
+    <table border="2">
+        <caption>Wallet Transactions</caption>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Crypto</th>
+            <th>Bal Delta</th>
+            <th>Avai Bal Delta</th>
+            <th>Bal</th>
+            <th>Avail Bal</th>
+            <th>Amnt</th>
+            </tr>   
+    {% for tick in transactions %} 
+     
+        <tr>
+            <td> {{ tick['id'] }}</td> 
+            <td> {{ tick['timestamp'] }} </td>
+            <td> {{ tick['description'] }}  </td>
+            <td> {{ tick['currency'] }} </td>
+            <td> {{ tick['balance_delta'] }} </td>
+            <td> {{ tick['available_bal_delta'] }} </td>
+            <td> {{ tick['balance'] }} </td>
+            <td> {{ tick['available_balance'] }}  </td>
+        {#   <td> {{ tick[9] }} </td>  #}
+        {#    <td> {{ tick[10] }} </td> #}
+            <td> {{ tick['value'] }} </td>
+        </tr>
+     
+    {% endfor %}
+     </table>
+         
+  </div>
+{% endblock %}

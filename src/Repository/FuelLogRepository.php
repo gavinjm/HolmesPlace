@@ -2,9 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\FuelLog;
+use App\Entity\Fuel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method FuelLog|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +14,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class FuelLogRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FuelLog::class);
+        parent::__construct($registry, Fuel::class);
     }
 
     // /**

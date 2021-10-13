@@ -15,10 +15,9 @@
         <tr>
         <td> {% if tick['pair'] is defined %} {{ tick['pair'] }} {% endif %}</td>
         <td> {% if tick['ask'] is defined  %} {{ tick['ask'] }} {% endif %} </td>
-        <td> {{ tick['bid'] }} </td>
-        <td> 
-            {% if tick['last_trade'] is defined %}
-                {{ tick['last_trade'] }}
+        <td> {% if tick['bid'] is defined  %} {{ tick['bid'] }}{% endif %} </td>
+        <td> {% if tick['last_trade'] is defined %}
+            {{ tick['last_trade'] }}
              {% endif %}
         </td>
         <td> {{ tick['rolling_24_hour_volume'] }} </td>

@@ -70,7 +70,7 @@ class LogonFormAuthenticator extends AbstractFormLoginAuthenticator
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Password could not be found.');
         }
-
+        
         return $user;
     }
 
@@ -86,7 +86,7 @@ class LogonFormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        return new RedirectResponse($this->urlGenerator->generate('summary'));
+        return new RedirectResponse($this->urlGenerator->generate('home'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 

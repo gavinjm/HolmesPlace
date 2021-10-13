@@ -21,6 +21,7 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
 }
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+date_default_timezone_set( 'Africa/Johannesburg' );
 $request = Request::createFromGlobals();
 //print_r($request);
 $response = $kernel->handle($request);

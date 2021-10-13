@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'vehicle_base.html.twig' %}
 
 {% block title %}New Trip Entry!{% endblock %}
 
@@ -9,7 +9,7 @@
     <h3> Todays Date: {{ current_date }} </h3> 
     
         <h1>Action Required: {{ action }}! ✅</h1>
-     <form action="{{ path('trip') }}" method="post" >
+     <form action="{{ path('vehicle_trip') }}" method="post" >
       {{ form_widget(form) }}  
    
  </form>

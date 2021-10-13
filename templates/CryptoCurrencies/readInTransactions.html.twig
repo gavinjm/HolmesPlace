@@ -1,0 +1,49 @@
+{% extends 'crypto_base.html.twig' %}
+
+{% block title %} {{ page }} {% endblock %}
+
+{% block body %}
+   
+     <div class="main">
+         <br>
+         <h1>Transactions Page</h1>
+         <p>This page contasins the transactions doanloaded from Luno. </p>
+         
+    <table border="2">
+        <tr>
+            <th>id</th>
+            <th>Wallet_Id</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Crypto</th>
+            <th>Bal Delta</th>
+            <th>Avai Bal Delta</th>
+            <th>Bal</th>
+            <th>Avail Bal</th>
+            <th>cc_transaction id</th>
+            <th>cc_address</th>
+            <th>Value</th>
+            
+            </tr>   
+    {% for tick in transactions %} 
+     
+        <tr>
+            <td> {{ tick[0] }}</td> 
+            <td> {{ tick[1] }} </td>
+            <td> {{ tick[2] }} </td>
+            <td> {{ tick[3] }}  </td>
+            <td> {{ tick[4] }} </td>
+            <td> {{ tick[5] }} </td>
+            <td> {{ tick[6] }} </td>
+            <td> {{ tick[7] }} </td>
+            <td> {{ tick[8] }}  </td>
+           <td> {{ tick[9] }} </td>  
+            <td> {{ tick[10] }} </td> 
+            <td> {{ tick[11] }} </td>
+        </tr>
+     
+    {% endfor %}
+     </table>
+         
+  </div>
+{% endblock %}

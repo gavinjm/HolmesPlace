@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TransactionRepository")
+ * @ORM\Entity(repositoryClass="TransactionRepository::class")
  */
 class Transaction
 {
@@ -15,7 +16,7 @@ class Transaction
      * @ORM\Column(type="integer")
      */
     private $id;
-
+    
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -70,6 +71,21 @@ class Transaction
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $value;
+
+    function __construct($transaction){
+        $this->id = $transaction['id'];
+        $this->walletId = $transaction['wallet_id'];
+        $this->timestamp = (int)$transaction['timestamp'];
+        $this->description=$transaction['description'];
+        $this->currency=$transaction['currency'];
+        $this->balance_delta=$transaction['balance_delta'];
+        $this->available_bal_delta=$transaction['available_bal_delta'];
+        $this->balance=$transaction['balance'];
+        $this->available_bal=$transaction['available_balance'];
+        $this->ccTransactionId=$transaction['cc_transaction_id'];
+        $this->ccAddress= (int)$transaction['cc_address'];
+        $this->value=$transaction['value'];
+}
 
     public function getId(): ?int
     {

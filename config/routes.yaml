@@ -1,5 +1,9 @@
 index:
-    path:   /
+    path: /
+    controller: App\Controller\HolmesPlaceController::Index
+
+home:
+    path: /index
     controller: App\Controller\HolmesPlaceController::Index
 
 login:
@@ -9,36 +13,67 @@ login:
 logout:
     path: /logout
     controller: App\Controller\SecurityController::logout   
+    
 holmesplace:
     path: /admin
     controller: App\Controller\HolmesPlaceController::Admin
-trip:
-    path:   /trip
-    controller: App\Controller\HolmesPlaceController::TripEntry
+
+holmesplace_summary:
+    path: /summary
+    controller: App\Controller\HolmesPlaceController::SummaryPage    
+
+weather:
+    path: /weather/update
+    controller: App\Controller\HolmesPlaceController::UpdateWeather
+
+weather_main:
+    path: /weather
+    controller: App\Controller\HolmesPlaceController::Weather
+
+bee:
+    path: /bees/{page}
+    controller: App\Controller\HolmesPlaceController::BeeApp
+     
 crypto:
-    path: /crypto
-    controller: App\Controller\HolmesPlaceController::CryptoEntry
+    path: /crypto/
+    controller: App\Controller\CryptoController::c_index
+
+crypto_transactions_query:
+    path: /crypto/transactions/query
+    controller: App\Controller\CryptoController::queryTransactions
+    
+crypto_transactions:
+    path: /crypto/transactions/show
+    controller: App\Controller\CryptoController::showTransactions
+  
+crypto_wallets:
+    path: /crypto/wallets
+    controller: App\Controller\CryptoController::showWallets
     
 crypto_showticker:
-   path: /crypto/showticker
-   controller: App\Controller\HolmesPlaceController::showTickerData
+   path: /crypto/showticker/{pair}
+   controller: App\Controller\CryptoController::showTickerData
 
 crypto_update:
    path: /crypto/update
-   controller: App\Controller\HolmesPlaceController::updateCryptoPrices
+   controller: App\Controller\CryptoController::updateCryptoPrices
+   
+crypto_readin:
+   path: /readin
+   controller: App\Controller\CryptoController::readInTransactions
       
-summary:
-    path:   /summary
-    controller: App\Controller\HolmesPlaceController::SummaryPage    
-
-fuel:
-    path:   /fuel
-    controller: App\Controller\HolmesPlaceController::FuelEntry
+vehicle:
+    path: /vehicle
+    controller: App\Controller\VehicleController::v_index
     
-readin:
-    path: /readin
-    controller: App\Controller\HolmesPlaceController::DisplayTransactions
-    
+vehicle_fuel:
+    path: vehicle/fuel
+    controller: App\Controller\VehicleController::FuelEntry   
+ 
+vehicle_trip:
+    path: vehicle/trip
+    controller: App\Controller\VehicleController::TripEntry
+  
 task_success:
     path:   /task_success/{slug}
     defaults:

@@ -1,0 +1,68 @@
+{% extends 'crypto_base.html.twig' %}
+
+{% block title %} {{ page }} {% endblock %}
+
+{% block body %}
+   
+     <div class="main">
+      <form action="{{ path('crypto_transactions_query') }}" method="post">
+          <input type="submit" value="Execute">
+          <label for="startdate">Start Date:</label>
+          <input type="text" id="startdate" name="startdate"/>
+          <label for="enddate">End Date:</label>
+          <input type="text" id="enddate" name="enddate"/>
+          <label for="currency">Currency</label>
+          <input type="text" id="currency" name="currency"/>
+          <label for="description">Description Contains</label>
+          <input type="textarea" id="description" name="description" rows="4" cols="50">
+          
+          <input  type="hidden" name="pair" id="pair" value="ETHZAR">
+      </form>
+             
+    <table border="2">
+        <caption>Wallet Transactions</caption>
+        <tr>
+            <th>Month</th>
+            <th>Purchases</th>
+            <th>Sales</th>
+            <th>Interest</th>
+            <th>Charges</th>
+            
+        </tr> 
+        <tr><td>{% if period is defined %} {{ period }} {% endif %}</td><td></td><td></td><td></td></tr>
+    </table>
+    {% if transactions is defined %}
+    <table border="2">
+        <caption>Wallet Transactions</caption>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Crypto</th>
+            <th>Bal Delta</th>
+            <th>Avai Bal Delta</th>
+            <th>Bal</th>
+            <th>Avail Bal</th>
+            <th>Amnt</th>
+            </tr>   
+    {% for tick in transactions %} 
+     
+        <tr>
+            <td> {{ tick['id'] }}</td> 
+            <td> {{ tick['timestamp'] }} </td>
+            <td> {{ tick['description'] }}  </td>
+            <td> {{ tick['currency'] }} </td>
+            <td> {{ tick['balance_delta'] }} </td>
+            <td> {{ tick['available_bal_delta'] }} </td>
+            <td> {{ tick['balance'] }} </td>
+            <td> {{ tick['available_balance'] }}  </td>
+        {#   <td> {{ tick[9] }} </td>  #}
+        {#    <td> {{ tick[10] }} </td> #}
+            <td> {{ tick['value'] }} </td>
+        </tr>
+     
+    {% endfor %}
+     </table>
+    {%  endif %}       
+  </div>
+{% endblock %}

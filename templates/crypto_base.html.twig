@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="{{ asset('/asset/css/HPStyleSheet.css') }}" rel="stylesheet" type="text/css" />
+            <script source="{{ asset('/asset/javascript/hpJavaScript.js') }}" ></script>
+        {% endblock %}
+    </head>
+    <body>
+        {% block menu %}
+            <div class="navbar">
+            <a href="/">Home</a>
+            <a href="/crypto">Crypto Home</a>
+            <a href="/crypto/wallets">Wallets</a>
+            <a href="/crypto/showticker/ETHZAR">Etherium</a>
+            <a href="/crypto/showticker/XBTZAR">Bitcoin</a>
+            <a href="/crypto/transactions/show">Transactions</a>
+            <a href="/crypto/transactions/query">Query Transactions</a>
+            <a href="/crypto/transactions/readin">Read In Luno csv file</a>
+            <a href="#">Transfer</a>
+            <a href="#">Deposit Funds</a>
+           </div>
+          {% endblock %}
+        {% block body %}
+        
+        {% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

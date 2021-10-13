@@ -1,0 +1,58 @@
+{% extends 'crypto_base.html.twig' %}
+
+{% block title %} Crypto Home {% endblock %}
+
+{% block body %}
+   
+     <div class="main">
+                
+     {% if cryptoPrices is defined %}    
+         <table border="2">
+             <caption>Latest Crypto Prices</caption>
+        <tr><th>Date</th><th>Bitcoin</th><th>Etherium</th>
+            </tr>   
+        <tr>
+            <td> {{ cryptoPrices[0].date }} </td>
+            <td> {{ cryptoPrices[0].btc_price }} </td>
+            <td> {{ cryptoPrices[0].eth_price }} </td>
+        </tr>
+    
+   {% endif %}
+  
+     </table>
+         {% if cryptoCurrencies is defined %}
+     <hr>         
+     
+    <table border="2">
+        <caption>Current Crypto Values</caption>
+        <tr><th>Name</th><th>Balance</th><th>Value</th>
+            </tr>   
+    {% for tick in cryptoCurrencies %}
+        <tr>
+            <td> {{ tick['name'] }}</td>
+            <td> {{ tick['balance'] }} </td>
+            {% if  tick['name'] == 'BTC' %} 
+                <td> {{ (tick['balance'] * cryptoPrices[0].btc_price)|round(2,'floor') }} </td>
+             {% endif %}
+             {% if  tick['name'] == 'ETH' %} 
+                <td> {{ (tick['balance'] * cryptoPrices[0].eth_price) |round(2, 'floor') }} </td>
+             {% endif %}
+             {% if  tick['name'] == 'ZAR' %} 
+                <td> {{ (tick['balance']) |round(2, 'floor')  }} </td>
+             {% endif %}
+             {% if  tick['name'] == 'ETH-SAVINGS' %} 
+                <td> {{ (tick['balance'] * cryptoPrices[0].eth_price) | round(2, 'floor')  }} </td>
+             {% endif %}
+        </tr>
+     {% endfor %}
+     {% if totals is defined %}
+         <tr><td></td><td>{{ totals['ether_sum'] | round(3,'ceil') }}</td><td>{{ totals['value'] | round(2,'ceil') }}</td></tr>
+             {% endif %}
+     </table>
+     
+    {% endif %}
+         
+         
+         
+  </div>
+{% endblock %}
